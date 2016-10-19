@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h3 class="modal-title" id="modal-title">Drive settings</h3>
+</div>
+<div class="modal-body" id="modal-body">
+  <p>
+    <select ng-model="data.targetInput" ng-change="onInputChange(data.targetInput)">
+      <option value="">None</option>
+      <option ng-repeat="o in inputOptions track by o.id" value="{{o.id}}">{{o.name}}</option>
+    </select>
+    <input type="checkbox" name="Success" ng-model="data.inputSuccess">
+  </p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

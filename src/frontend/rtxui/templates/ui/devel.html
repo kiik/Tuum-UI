@@ -1,0 +1,68 @@
+<style>
+
+.editor {
+  height: 100%;
+  width: 100%;
+}
+.editor > * {
+  width: 100%;
+}
+
+.ace_editor {
+  height: 90%;
+}
+
+.header, .footer {
+
+}
+.header {
+  height: 3%;
+  background-color: #F0F0F0;
+}
+.footer {
+  height: 9%;
+  background-color: #00bcd4;
+}
+
+.tabs {
+  padding-top: 2px;
+  padding-left: 10px;
+}
+.tabs > * {
+  float: left;
+
+  color: gray;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+
+  font-size: 14px;
+  padding: 0px 5px 0px 5px;
+}
+.tabs > *:hover {
+  color: black;
+
+  cursor: pointer;
+}
+.tabs > .selected {
+  color: black;
+
+  border: 1px solid #ADADAD;
+  border-bottom: 1px solid #f0f0f0;
+
+  font-weight: bold;
+}
+</style>
+
+<div class="editor">
+  <div class="header">
+    <div class="tabs">
+      <div ng-repeat="(id, f) in fman.files" ng-class="{ 'selected': fman.fileId == id }" ng-click="fman.selectFile(id)">{{f.name}}</div>
+    </div>
+  </div>
+
+  <div ui-ace="{ onLoad : aceLoaded }" ng-model="data.content"></div>
+
+  <div class="footer">
+
+  </div>
+</div>

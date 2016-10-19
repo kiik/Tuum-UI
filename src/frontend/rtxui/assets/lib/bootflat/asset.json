@@ -1,0 +1,5 @@
+{
+  "name": "bootflat",
+  "css": ["css/bootflat.min.css"],
+  "js": ["js/icheck.min.js", "jquery.fs.selecter.min.js"]
+}

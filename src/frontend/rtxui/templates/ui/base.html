@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="TuumUI">
+  <head>
+    <title>Tuum Robotex UI</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link href="/assets/css/rtx.css" rel="stylesheet" type="text/css">
+
+    <script src="/assets/lib/lodash.min.js"></script>
+    <script src="/assets/lib/js-struct.js"></script>
+
+    <script src="/assets/lib/jq/jquery-3.1.0.min.js"></script>
+
+    <!--
+    <script src="/assets/lib/bytebuffer.min.js"></script>
+    <script src="/assets/lib/protobuf.min.js"></script>
+  -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.js"></script>
+    <script src="/assets/lib/ng/angular-simple-logger.js" type="text/javascript"></script>
+    <script src="/assets/lib/ng/ui-bootstrap-contextMenu.js"></script>
+
+    <script src="/assets/lib/ace.js"></script>
+    <script src="/assets/lib/ui-ace.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.1.3/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.4/angular-google-maps.js"></script>
+
+    <script src="/assets/js/TuumProtocol.js"></script>
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/TuumInput.js"></script>
+    <script src="/assets/js/services.js"></script>
+    <script src="/assets/js/controllers.js"></script>
+  </head>
+  <body>
+
+    <!--
+    <div class="sidebar">
+      <ul>
+        <li>
+          <a href="#/map" class="btn">GPS</a>
+        </li>
+        <li>
+          <a href="#/drive" class="btn">Drv</a>
+        </li>
+        <li>
+          <a href="#/devel" class="btn">Dev</a>
+        </li>
+        <li>
+          <a class="btn">Btn3</a>
+        </li>
+        <li>
+          <a class="btn">Btn4</a>
+        </li>
+        <li>
+          <a class="btn">Btn5</a>
+        </li>
+      </ul>
+    </div>-->
+
+    <style>
+      .menu {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        height: 0%;
+        z-index: 1;
+      }
+    </style>
+    <div class="menu">
+      <div class="btn-group-vertical">
+        <a href="#/drive" class="btn btn-primary"><i class="glyphicon glyphicon-home"></i></a>
+        <a href="#/calibrate" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
+        <a href="#/devel" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
+        <a href="" class="btn btn-primary"><i class="glyphicon glyphicon-cog"></i></a>
+      </div>
+    </div>
+
+    <div class="content" ng-view>
+    </div>
+
+  </body>
+</html>
