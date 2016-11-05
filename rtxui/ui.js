@@ -25,6 +25,10 @@ router.get('/devel.html', function(req, res, next) {
   res.sendFile(path.join(__dirname + '/templates/ui/devel.html'));
 });
 
+router.get('/calibrate.html', function(req, res, next) {
+  res.sendFile(path.join(__dirname + '/templates/ui/calibrate.html'));
+});
+
 module.exports = {
   'register_router': function(target) {
     target.use('/ui', router);

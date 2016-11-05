@@ -168,6 +168,7 @@ body > * {
   -webkit-box-align: center;
 }
 .section > .sect-body {
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -176,6 +177,18 @@ body > * {
   font-weight: bold;
   font-family: monospace;
   z-index: 11;
+}
+
+.grid {
+  float: left;
+}
+.G2b2 {
+  width: 50%;
+  height: 50%;
+}
+.G2b1 {
+  width: 50%;
+  height: 100%;
 }
 
 .robot-thumbnail {
@@ -333,7 +346,7 @@ body > * {
 
 hr {
   border: 0;
-  border-top: 1px solid #F5F7FA66;
+  border-top: 1px solid rgba(245, 247, 250, 0.3);
   margin: 2px 0;
 }
 
@@ -364,8 +377,16 @@ hr {
   height: 100%;
   overflow-x: hidden;
   font-size: 12px;
-  border: 1px solid #AC92EC33;
+  border: 1px solid rgba(172, 146, 236, 0.25);
 }
 .power-bar span {
   float: left;
+}
+
+select {
+  background-color: #fff;
+  color: black;
+  border: 1px solid #aab2bd;
+  font-size: 10px;
+  padding: 2px;
 }

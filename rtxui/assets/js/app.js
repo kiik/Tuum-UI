@@ -21,7 +21,7 @@ app.config(['$routeProvider',
         }).
         when('/calib', {
             templateUrl: '/ui/calibrate.html',
-            controller: 'EmptyCtrl'
+            controller: 'CalibCtrl'
         }).
         otherwise({
             redirectTo: '/drive'

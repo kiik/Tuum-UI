@@ -1,0 +1,25 @@
+
+
+<div class="grid G2b2">
+  <div class="placeholder">
+    <span style="font-size:12px;font-style:italic;color:whitesmoke;">Target stream</span>
+    <select ng-model="targetDevice">
+      <option value="CAM0">CAM0 ('/dev/video1')</option>
+      <option value="CAM1">CAM1 ('/dev/video2')</option>
+    </select>
+    <button class="tuum-btn tuum-warning" ng-click="grabFrame()">Grab frame</button>
+  </div>
+  <div class="calib-canvas">
+    <img class="camera-feed" src="http://localhost:8080" alt="|Video stream 'CAM1'|">
+  </div>
+</div>
+
+<div class="grid G2b1">
+  <div class="calib-tools">
+    <ul>
+      <li><button ng-click="debug()">Pick color</button></li>
+      <li>Pick range</li>
+      <li>Pick area</li>
+    </ul>
+  </div>
+</div>

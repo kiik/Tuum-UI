@@ -1,0 +1,3 @@
+[submodule "libtuumui"]
+	path = libtuumui
+	url = git@github.com:kiik/libtuumui.git

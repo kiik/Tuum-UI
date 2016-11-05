@@ -9,6 +9,7 @@ var TuumProtocol = function(TSrv) {
   var initDriveProtocol = function(srv) {
     srv.omniDrive = function(spd, dir, rot) {
       var data = {
+        uri: '/drv',
         c: 'drv',
         s: spd,
         d: dir * 1000,
@@ -24,7 +25,25 @@ var TuumProtocol = function(TSrv) {
     return srv;
   }
 
+  var initCoilProtocol = function(srv) {
+    srv.doCharge = function() {
+      this.send({'c': 'chrg'});
+    }
+
+    return srv;
+  }
+
+  var initFsProtocol = function(srv) {
+    srv.ls = function(path = ".") {
+      this.send({'c': 'ls', 'p': path});
+    }
+
+    return srv;
+  }
+
   initDriveProtocol(this);
+  initCoilProtocol(this);
+  initFsProtocol(this);
 
   return this;
 }

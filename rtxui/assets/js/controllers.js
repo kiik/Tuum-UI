@@ -19,6 +19,10 @@ tuiCtrls.controller('DriveCtrl',
     $scope.TBot = TBot;
     $scope.TInp = TInp;
 
+    $scope.doCharge = function() {
+      TBot.doCharge();
+    }
+
     var last_packet = undefined;
 
     var V = 100, R_v = 30;
@@ -138,6 +142,16 @@ tuiCtrls.controller('DrvSetCtrl',
       $Mod.dismiss('cancel');
     };
 
+  }
+]);
+
+tuiCtrls.controller('CalibCtrl',
+  ['$scope',
+  function ($scope) {
+
+    $scope.grabFrame = function() {
+      console.log($scope.targetDevice);
+    }
   }
 ]);
 
