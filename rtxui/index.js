@@ -5,16 +5,16 @@ var logger = require('morgan');
 var express = require('express');
 var _io = require('socket.io');
 
-var env = require('..').env,
-    helpers = env.helpers;
-    factory = env.factory;
 
 function arraysEqual(a1,a2) {
     return JSON.stringify(a1)==JSON.stringify(a2);
 }
 
 module.exports = {
-  'create_app': function() {
+  'create_app': function(env) {
+    var helpers = env.helpers,
+        factory = env.factory;
+
     var app = factory.create_app(__dirname);
 
     app.sio = _io;
