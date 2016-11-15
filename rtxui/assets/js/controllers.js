@@ -156,17 +156,9 @@ tuiCtrls.controller('CalibCtrl',
         ctx = canv.getContext('2d');
 
     var w = 640, h = 480;
-    baseCanv.width = w;
-    baseCanv.height = h;
+
     var gOverlay = new TuumOverlay(canv, w, h);
-
-
-    baseCtx.beginPath();
-    baseCtx.rect(0, 0, w, h);
-    baseCtx.fillStyle = "green";
-    baseCtx.fill();
-
-
+    var gVision = new TuumVision(baseCanv, w, h);
 
     var t = gOverlay.findTool(VectorPicker);
     if(t != null) {
@@ -175,44 +167,16 @@ tuiCtrls.controller('CalibCtrl',
       t.onVector(function(p0, p1, v, l) {
         if(l < 5) return;
 
-        baseCtx.beginPath();
-        baseCtx.moveTo(p0[0],p0[1]);
-        baseCtx.lineTo(p0[0] + v[0], p0[1]);
-        baseCtx.lineTo(p0[0] + v[0], p0[1] + v[1]);
-        baseCtx.lineTo(p0[0], p0[1] + v[1]);
-        baseCtx.lineTo(p0[0], p0[1]);
-        baseCtx.stroke();
+        gVision.debugLine(p0, p1);
 
-        var x0 = Math.min(p0[0], p1[0]), y0 = Math.min(p0[1], p1[1]),
-            x1 = Math.max(p0[0], p1[0]), y1 = Math.max(p0[1], p1[1]);
+        var pxs = gVision.getPixelsOnLine(p0, p1);
 
-        var idat = baseCtx.getImageData(x0, y0, Math.abs(v[0]), Math.abs(v[1]));
-
-        var data = idat.data;
-        var dy = Math.abs(v[1] * 1.0 / v[0]);
-        var i;
-        for(var y = 0, x = 0; x < (x1 - x0); x++, y = dy * x) {
-          i = (Math.round(y) * idat.width + x) * 4;
-          data[i] = 255;
-        }
-
-        baseCtx.putImageData(idat, x0, y0);
       });
-    }
-
-    function drawFrame(data) {
-      baseCtx.clearRect(0, 0, baseCanv.width, baseCanv.height);
-
-      var img = new Image();
-      img.onload = function() {
-        baseCtx.drawImage(img, 0, 0, img.width, img.height, 0, 0, baseCanv.width, baseCanv.height);
-      }
-      img.src = "data:image/png;base64," + data;
     }
 
     $scope.grabFrame = function() {
       TBot.getFrame(function(dat) {
-        drawFrame(dat.frame);
+        gVision.renderFrame(dat.frame);
       })
     }
 
