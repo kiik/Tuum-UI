@@ -2,8 +2,8 @@
 var TuumProtocol = function(TSrv) {
   var gSrv = TSrv;
 
-  this.send = function(data) {
-    return gSrv.sendRequest(data);
+  this.send = function(data, cb) {
+    return gSrv.sendRequest(data, cb);
   }
 
   var initDriveProtocol = function(srv) {
@@ -20,6 +20,18 @@ var TuumProtocol = function(TSrv) {
       this.send(data, function(res) {
         console.log(":DriveProtocol::omniDrive: Response - " + JSON.parse(res));
       });
+    }
+
+    return srv;
+  }
+
+  var initVisionProtocol = function(srv) {
+    srv.getFrame = function(cb) {
+      this.send({
+        'uri': '/vis',
+        'c': 'getFrame',
+        'dev': 'CAM0',
+      }, cb);
     }
 
     return srv;
@@ -42,6 +54,7 @@ var TuumProtocol = function(TSrv) {
   }
 
   initDriveProtocol(this);
+  initVisionProtocol(this);
   initCoilProtocol(this);
   initFsProtocol(this);
 

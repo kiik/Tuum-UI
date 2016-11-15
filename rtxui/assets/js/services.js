@@ -47,17 +47,19 @@ angular.module('TuumUI').factory('TuumSrv',
         cb: cb,
       };
 
-      ws.send(JSON.stringify(req));
+      var dat = JSON.stringify(req);
+      ws.send(dat);
       return true;
     }
 
     Service.listener = function(dat) {
-      var res = JSON.parse(dat);
+      var res = JSON.parse(dat.data);
+
       var cId = res._;
       if(!cId) return;
 
       if(callbacks.hasOwnProperty(cId)) {
-        var cb = callbacks[cId];
+        var cb = callbacks[cId].cb;
 
         if(cb) {
           $rootScope.$apply(cb(res));

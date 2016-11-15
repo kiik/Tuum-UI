@@ -32,164 +32,187 @@
 
 </style>
 
-<div class="section" ng-controller="EmptyCtrl">
-  <div class="sect-body row">
-    <div class="col-xs-7 col-tight">
-      <img class="camera-feed" src="" alt="|Video stream 'CAM1'|">
-    </div>
-    <div class="col-xs-6 col-tight hidden">
-      <img class="camera-feed" src="" alt="|Video stream 'CAM0'|">
-    </div>
-    <div class="log col-xs-12 hidden">
-      <p>1476900547681:<span class="level-dbg">DBG</span>:<span class="origin">Configuration::init</span>: Loading: config.ini</p>
-      <p>1476900547681:<span class="level-info">INFO</span>:<span class="origin">WebSocketServer::init</span>: Creating wsoc context...</p>
-      <p>1476902913466:<span class="level-info">INFO</span>:<span class="origin">Hardware::init</span>: Loading video streams...</p>
-      <p>1476902913555:<span class="level-info">INFO</span>:<span class="origin">Hardware::init</span>: Loading modules...</p>
-      <p>error : port_->open() failed...com_port_name=/dev/ttyACM0, e=No such file or directory</p>
-      <p>1476903021747:<span class="level-info">INFO</span>:<span class="origin">MotorControl::init</span>: Ready.</p>
+<div class="">
 
-      <p>[WSS:cb_http]New connection id=1.</p>
-      <p>[WSS:cb_wsjs]Connection established.</p>
-      <p>[1476903073:0040] NOTICE: wsi 0x7fbc1c001f40: TIMEDOUT WAITING on 3 (did hdr 0, ah (nil), wl 0, pfd events 0)</p>
-      <p>[1476903073:0040] ERR: *** not on ah wait list ***</p>
+  <div class="col-xs-6 hidden-xs hidden-sm" ng-controller="EmptyCtrl">
+    <div class="sect-body row-fluid">
+      <div class="col-xs-7 col-tight">
+        <img class="camera-feed" src="http://localhost:8080" alt="|Video stream 'CAM1'|">
+      </div>
+      <div class="col-xs-6 col-tight hidden">
+        <img class="camera-feed" src="" alt="|Video stream 'CAM0'|">
+      </div>
+      <div class="log col-xs-12 hidden">
+        <p>1476900547681:<span class="level-dbg">DBG</span>:<span class="origin">Configuration::init</span>: Loading: config.ini</p>
+        <p>1476900547681:<span class="level-info">INFO</span>:<span class="origin">WebSocketServer::init</span>: Creating wsoc context...</p>
+        <p>1476902913466:<span class="level-info">INFO</span>:<span class="origin">Hardware::init</span>: Loading video streams...</p>
+        <p>1476902913555:<span class="level-info">INFO</span>:<span class="origin">Hardware::init</span>: Loading modules...</p>
+        <p>error : port_->open() failed...com_port_name=/dev/ttyACM0, e=No such file or directory</p>
+        <p>1476903021747:<span class="level-info">INFO</span>:<span class="origin">MotorControl::init</span>: Ready.</p>
+
+        <p>[WSS:cb_http]New connection id=1.</p>
+        <p>[WSS:cb_wsjs]Connection established.</p>
+        <p>[1476903073:0040] NOTICE: wsi 0x7fbc1c001f40: TIMEDOUT WAITING on 3 (did hdr 0, ah (nil), wl 0, pfd events 0)</p>
+        <p>[1476903073:0040] ERR: *** not on ah wait list ***</p>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="section" ng-controller="EmptyCtrl">
-  <div class="sect-body">
-    <div class="row minor-info-head">
-      <div class="col-xs-3">
-        <ul>
-          <li>Team: Blue</li>
-          <li>Mode: F1v1</li>
-        </ul>
-      </div>
+  <div class="col-xs-6 hidden-xs hidden-sm" ng-controller="EmptyCtrl">
+    <div class="sect-body">
+      <div class="row-fluid minor-info-head">
+        <div class="col-xs-3">
+          <ul>
+            <li>Team: Blue</li>
+            <li>Mode: F1v1</li>
+          </ul>
+        </div>
 
-      <div class="col-xs-5">
-        <ul>
-          <li>Logic: 'STMKickoffPrepare'</li>
-          <li>State: 'STWaitPass'</li>
-        </ul>
-      </div>
+        <div class="col-xs-5">
+          <ul>
+            <li>Logic: 'STMKickoffPrepare'</li>
+            <li>State: 'STWaitPass'</li>
+          </ul>
+        </div>
 
-      <div class="col-xs-4">
-        <ul>
-          <li>Runtime: 120s</li>
-          <li>Build: 0.0.2-rc.0</li>
-        </ul>
+        <div class="col-xs-4">
+          <ul>
+            <li>Runtime: 120s</li>
+            <li>Build: 0.0.2-rc.0</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <p>
-      <div style="margin-right: 40px;" class="placeholder">
-        <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">Logic manager</h4>
-        <select>
-          <option value="0">tuum::FBLogic</option>
-          <option value="1">tuum::TFBLogic</option>
-          <option value="2">stmKickoffReceiverPrepare</option>
-          <option value="3">stmKickoffReceiver</option>
-        </select>
-        <button class="tuum-btn tuum-dangerous">Run</button>
-      </div>
+      <p>
+        <div style="margin-right: 40px;" class="placeholder">
+          <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">Logic manager</h4>
+          <select>
+            <option value="0">tuum::FBLogic</option>
+            <option value="1">tuum::TFBLogic</option>
+            <option value="2">stmKickoffReceiverPrepare</option>
+            <option value="3">stmKickoffReceiver</option>
+          </select>
+          <button class="tuum-btn tuum-dangerous">Run</button>
+        </div>
 
+        <div class="placeholder">
+          <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">Sublogic (debugging)</h4>
+          <select>
+            <option value="0">stmKickoffPasserPrepare</option>
+            <option value="1">stmKickoffPasser</option>
+            <option value="2">stmKickoffReceiverPrepare</option>
+            <option value="3">stmKickoffReceiver</option>
+          </select>
+          <button class="tuum-btn tuum-dangerous">Run</button>
+        </div>
+      </p>
+
+      <br/>
       <div class="placeholder">
-        <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">Sublogic (debugging)</h4>
+        <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">STM Overrides</h4>
         <select>
-          <option value="0">stmKickoffPasserPrepare</option>
+          <option value="0">stmStraightOffence</option>
           <option value="1">stmKickoffPasser</option>
           <option value="2">stmKickoffReceiverPrepare</option>
           <option value="3">stmKickoffReceiver</option>
         </select>
-        <button class="tuum-btn tuum-dangerous">Run</button>
+        <span>&larr;--</span>
+        <select>
+          <option value="0">stmJavascriptTest.js</option>
+          <option value="1">stmKickoffPasser</option>
+          <option value="2">stmKickoffReceiverPrepare</option>
+          <option value="3">stmKickoffReceiver</option>
+        </select>
+        <button class="tuum-btn tuum-warning">Apply</button>
       </div>
-    </p>
 
-    <br/>
-    <div class="placeholder">
-      <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">STM Overrides</h4>
-      <select>
-        <option value="0">stmStraightOffence</option>
-        <option value="1">stmKickoffPasser</option>
-        <option value="2">stmKickoffReceiverPrepare</option>
-        <option value="3">stmKickoffReceiver</option>
-      </select>
-      <span>&larr;--</span>
-      <select>
-        <option value="0">stmJavascriptTest.js</option>
-        <option value="1">stmKickoffPasser</option>
-        <option value="2">stmKickoffReceiverPrepare</option>
-        <option value="3">stmKickoffReceiver</option>
-      </select>
-      <button class="tuum-btn tuum-warning">Apply</button>
-    </div>
-
-  </div>
-</div>
-
-<style>
-.field {
-  height: 100%;
-  max-width: 100%;
-}
-.field-data {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: black;
-  background-color: rgba(255, 255, 255, 0.75);
-  padding: 4px;
-  margin: 0;
-  font-weight: bold;
-  font-size: 9px;
-}
-.field-data span {
-
-}
-</style>
-<div class="section" ng-controller="EmptyCtrl">
-  <div class="sect-body">
-    <img class="field" src="/assets/img/fbfield.png" alt="|FIELD|">
-    <div class="field-data">
-        <span>Goals: 0</span>
-        <span>Balls: 0</span>
-        <span>Robots: 0</span>
-        <span>Position: -1000, -1000</span>
     </div>
   </div>
-</div>
 
-<div class="section" style="position:relative;" ng-controller="DriveCtrl">
-  <div class="curtain hidden"></div>
-  <div class="sect-body">
-    <div class="row">
-      <div class="col-xs-4">
-        <div class="indics-dir noselect">
-          <div class="power-bar">
-            <span class="indic-green">||||||||||</span>
-            <span class="indic-yel">||||||||</span>
-            <span class="indic-red">||||</span>
-          </div>
+  <style>
+  .field {
+    height: 100%;
+    max-width: 100%;
+  }
+  .field-data {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 4px;
+    margin: 0;
+    font-weight: bold;
+    font-size: 9px;
+  }
+  .field-data span {
 
-          <div class="controls">
-            <span ng-class="{'indic-green': TInp.uiKBind('Q') }">&cularr;</span>
-            <span ng-class="{'indic-green': TInp.uiKBind('W') }">&uarr;</span>
-            <span ng-class="{'indic-green': TInp.uiKBind('E') }">&curarr;</span><br/>
-            <span ng-class="{'indic-green': TInp.uiKBind('A') }">&larr;</span>
-            <span class="lock noselect">
-              <button id="lock" class="indic-btn {{TInp.uiKBind('LS') == 1 ? 'indic-red' :'indic-green'}}">&#9899;</button>
-            </span>
-            <span ng-class="{'indic-green': TInp.uiKBind('D') }">&rarr;</span><br/>
-            <span>&Uarr;</span>
-            <span ng-class="{'indic-green': TInp.uiKBind('S') }">&darr;</span>
-            <span>&sime;</span>
+  }
+  </style>
+  <div class="col-xs-6 visible-lg" ng-controller="EmptyCtrl">
+    <div class="sect-body">
+      <img class="field" src="/assets/img/fbfield.png" alt="|FIELD|">
+      <div class="field-data">
+          <span>Goals: 0</span>
+          <span>Balls: 0</span>
+          <span>Robots: 0</span>
+          <span>Position: -1000, -1000</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-xs-12" style="position:relative;" ng-controller="DriveCtrl">
+    <div class="curtain hidden"></div>
+    <div class="sect-body">
+      <div class="row-fluid">
+
+        <div class="col-xs-4">
+          <div class="indics-dir noselect">
+            <div class="power-bar">
+              <span class="indic-green">||||||||||</span>
+              <span class="indic-yel">||||||||</span>
+              <span class="indic-red">||||</span>
+            </div>
+
+            <div class="controls">
+              <span ng-class="{'indic-green': TInp.uiKBind('Q') }">&cularr;</span>
+              <span ng-class="{'indic-green': TInp.uiKBind('W') }">&uarr;</span>
+              <span ng-class="{'indic-green': TInp.uiKBind('E') }">&curarr;</span><br/>
+              <span ng-class="{'indic-green': TInp.uiKBind('A') }">&larr;</span>
+              <span class="lock noselect">
+                <button id="lock" class="indic-btn {{TInp.uiKBind('LS') == 1 ? 'indic-red' :'indic-green'}}">&#9899;</button>
+              </span>
+              <span ng-class="{'indic-green': TInp.uiKBind('D') }">&rarr;</span><br/>
+              <span>&Uarr;</span>
+              <span ng-class="{'indic-green': TInp.uiKBind('S') }">&darr;</span>
+              <span>&sime;</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-xs-4">
 
-        <img class="robot-thumbnail" src="/assets/img/robot.png">
+        <div class="col-xs-6">
 
-        <br/>
+          <img class="visible-lg visible-md robot-thumbnail" src="/assets/img/robot.png">
+
+          <div class="hidden-md hidden-lg">
+            <div class="btn-li">
+              <div class="grp">
+                <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
+                <button class="tuum-btn tuum-warning">Kick</button>
+              </div>
+
+              <div class="grp">
+                <button class="tuum-btn">Dribbler Start</button>
+                <button class="tuum-btn">Dribbler Init</button>
+              </div>
+
+              <div class="grp">
+                <button class="tuum-btn tuum-success">Ping motors</button>
+              </div>
+            </div>
+          </div>
+
+          <br/>
+
           <table class="indic-table">
             <thead>
               <tr>
@@ -214,57 +237,58 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="col-xs-2">
+          <button class="indic-btn indic-btn-float indic-red" style="float:right;font-size:20px;">&#9919;</button>
+          <br/>
+
+          <p style="font-size:10px;padding-left: 0;">
+            <span>VRAM: 229M</span><br/>
+            <span>CPU: 99%</span><br/>
+            <span>FPS: 22</span><br/>
+          </p>
+        </div>
       </div>
+      <hr>
+      <div class="row-fluid">
+        <div class="col-xs-10 visible-md visible-lg">
+          <div class="btn-li">
+            <div class="grp">
+              <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
+              <button class="tuum-btn tuum-warning">Kick</button>
+            </div>
 
-      <div class="col-xs-4">
-        <button class="indic-btn indic-btn-float indic-red" style="float:right;font-size:20px;">&#9919;</button>
-        <br/>
+            <div class="grp">
+              <button class="tuum-btn">Dribbler Start</button>
+              <button class="tuum-btn">Dribbler Init</button>
+            </div>
 
-        <ul style="font-size:10px;">
-          <li>VRAM: 229M</li>
-          <li>CPU: 99%</li>
-          <li>FPS: 22</li>
-        </ul>
-      </div>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-xs-10">
-        <div class="btn-li">
-          <div class="grp">
-            <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
-            <button class="tuum-btn tuum-warning">Kick</button>
-          </div>
-
-          <div class="grp">
-            <button class="tuum-btn">Dribbler Start</button>
-            <button class="tuum-btn">Dribbler Init</button>
-          </div>
-
-          <div class="grp">
-            <button class="tuum-btn tuum-success">Ping motors</button>
+            <div class="grp">
+              <button class="tuum-btn tuum-success">Ping motors</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
+</div> <!-- container-fluid -->
 
 
 <style>
-.section-center {
+.col-xs-6-center {
   position: absolute;
   left: 51%;
   top: 45%;
 
 }
 
-.section-center {
+.col-xs-6-center {
   z-index: 10;
 }
 
-.section-center .central-elem {
+.col-xs-6-center .central-elem {
   background-color: #204d46;
   padding: 0px 15px 0px 15px;
   border-radius: 30px;
@@ -279,7 +303,7 @@
   100% {background-color: #B11B1B;}
 }
 
-.section-center .active {
+.col-xs-6-center .active {
   animation-name: red-indicator;
   animation-duration: 1s;
   animation-iteration-count: infinite;
