@@ -36,8 +36,9 @@ TuumVision.prototype.renderFrame = function(png_data) {
   this.mCtx.clearRect(0, 0, this.mCanvas.width, this.mCanvas.width);
 
   var img = new Image();
+  var that = this;
   img.onload = function() {
-    this.mCtx.drawImage(img, 0, 0, img.width, img.height, 0, 0, baseCanv.width, baseCanv.height);
+    that.mCtx.drawImage(img, 0, 0, img.width, img.height, 0, 0, that.mCanvas.width, that.mCanvas.height);
   }
   img.src = "data:image/png;base64," + png_data;
 }
@@ -59,10 +60,40 @@ TuumVision.prototype.getPixelsOnLine = function(p0, p1) {
 
     i = (Math.round(Math.abs(y)) * idat.width + x) * 4;
 
+    if(data[i] == undefined) continue; //FIXME: Why does this occur?
     pxs.push([data[i], data[i++], data[i++]]);
-    data[i] = 255;
+
+    //data[i] = 255;
   }
 
-  this.mCtx.putImageData(idat, x0, y0);
+  //this.mCtx.putImageData(idat, x0, y0);
   return pxs;
+}
+
+TuumVision.prototype.calcColorShades = function(pxs, C = 3) {
+  var last_px = pxs[0], shade = pxs[0];
+  var shades = [];
+  shades.push(last_px);
+
+  var err;
+  for(var ix = 0; ix < pxs.length; ix++) {
+    err = 0;
+    var px = pxs[ix];
+    for(var i = 0; i < C; i++)
+      err += (px[i] - last_px[i]) / 255.0 / C;
+
+    //console.log("Err: " + err);
+    if(err > 0.05) {
+      console.log(last_px, px);
+      shades.push([Math.round(shade[0]), Math.round(shade[1]), Math.round(shade[2])]);
+      shade = px;
+    } else {
+      for(var i = 0; i < C; i++)
+        shade[i] = (shade[i] + px[i]) / 2.0;
+    }
+
+    last_px = px;
+  }
+
+  return shades;
 }

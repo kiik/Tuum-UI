@@ -170,7 +170,9 @@ tuiCtrls.controller('CalibCtrl',
         gVision.debugLine(p0, p1);
 
         var pxs = gVision.getPixelsOnLine(p0, p1);
+        if(pxs.length <= 0) return;
 
+        $scope.selectedShades = gVision.calcColorShades(pxs);
       });
     }
 
