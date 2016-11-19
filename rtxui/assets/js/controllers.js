@@ -25,7 +25,7 @@ tuiCtrls.controller('DriveCtrl',
 
     var last_packet = undefined;
 
-    var V = 100, R_v = 30;
+    var V = 600, R_v = 130;
 
     function sendControlCmds(inp, force = false) {
       if(!inp) return;
@@ -37,7 +37,7 @@ tuiCtrls.controller('DriveCtrl',
       }
 
       if(!_.isEqual(last_packet, inp) || force) {
-        TBot.omniDrive(inp.spd * V, inp.dir, inp.rot * R_v);
+        TBot.omniDrive(inp.spd * V, inp.dir * -1, inp.rot * R_v);
         last_packet = $.extend({},inp);
       }
     }
@@ -54,6 +54,7 @@ tuiCtrls.controller('DriveCtrl',
 
     TBot.then(function() {
       console.log(":DriveCtrl: 'TBot' ready.");
+      TBot.visionSetup({'threshold': true});
     });
 
     $scope.openSettings = function () {
@@ -148,31 +149,35 @@ tuiCtrls.controller('DrvSetCtrl',
 tuiCtrls.controller('CalibCtrl',
   ['$scope', 'TuumBot',
   function ($scope, TBot) {
+    var w = 640, h = 480;
+
+    TBot.visionSetup({'threshold': false});
 
     var baseCanv = document.getElementById('calib-canvas'),
         canv = document.getElementById('calib-overlay');
 
-    var baseCtx = baseCanv.getContext('2d'),
-        ctx = canv.getContext('2d');
-
-    var w = 640, h = 480;
+    var ctx = canv.getContext('2d');
 
     var gOverlay = new TuumOverlay(canv, w, h);
     var gVision = new TuumVision(baseCanv, w, h);
 
+    gOverlay.getInput().on('mousemove', function(pos) {
+      $scope.$apply(function() {
+        $scope.mousePos = pos;
+      });
+    });
+
     var t = gOverlay.findTool(VectorPicker);
     if(t != null) {
-      t.setTargetLayer(baseCtx);
-
       t.onVector(function(p0, p1, v, l) {
         if(l < 5) return;
 
-        gVision.debugLine(p0, p1);
+        gVision.debugLine(ctx, p0, p1);
 
         var pxs = gVision.getPixelsOnLine(p0, p1);
         if(pxs.length <= 0) return;
 
-        $scope.selectedShades = gVision.calcColorShades(pxs);
+        $scope.selectedShades = gVision.PixelUVFilterPack(pxs); //gVision.calcColorShades(pxs);
       });
     }
 
@@ -180,6 +185,11 @@ tuiCtrls.controller('CalibCtrl',
       TBot.getFrame(function(dat) {
         gVision.renderFrame(dat.frame);
       })
+    }
+
+    $scope.PPLConfigUpdate = function() {
+      console.log($scope.pplConfig);
+      TBot.PipelineConfig($scope.pplConfig);
     }
 
   }

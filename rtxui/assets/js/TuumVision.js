@@ -20,16 +20,16 @@ var TuumVision = function(canvas, w, h) {
   return this;
 }
 
-TuumVision.prototype.debugLine = function(p0, p1) {
+TuumVision.prototype.debugLine = function(ctx, p0, p1) {
   var v = [p1[0] - p0[0], p1[1] - p0[1]];
 
-  this.mCtx.beginPath();
-  this.mCtx.moveTo(p0[0],p0[1]);
-  this.mCtx.lineTo(p0[0] + v[0], p0[1]);
-  this.mCtx.lineTo(p0[0] + v[0], p0[1] + v[1]);
-  this.mCtx.lineTo(p0[0], p0[1] + v[1]);
-  this.mCtx.lineTo(p0[0], p0[1]);
-  this.mCtx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(p0[0],p0[1]);
+  ctx.lineTo(p0[0] + v[0], p0[1]);
+  ctx.lineTo(p0[0] + v[0], p0[1] + v[1]);
+  ctx.lineTo(p0[0], p0[1] + v[1]);
+  ctx.lineTo(p0[0], p0[1]);
+  ctx.stroke();
 }
 
 TuumVision.prototype.renderFrame = function(png_data) {
@@ -61,7 +61,7 @@ TuumVision.prototype.getPixelsOnLine = function(p0, p1) {
     i = (Math.round(Math.abs(y)) * idat.width + x) * 4;
 
     if(data[i] == undefined) continue; //FIXME: Why does this occur?
-    pxs.push([data[i], data[i++], data[i++]]);
+    pxs.push([data[i++], data[i++], data[i++]]);
 
     //data[i] = 255;
   }
@@ -83,8 +83,7 @@ TuumVision.prototype.calcColorShades = function(pxs, C = 3) {
       err += (px[i] - last_px[i]) / 255.0 / C;
 
     //console.log("Err: " + err);
-    if(err > 0.05) {
-      console.log(last_px, px);
+    if(err > 0.01) {
       shades.push([Math.round(shade[0]), Math.round(shade[1]), Math.round(shade[2])]);
       shade = px;
     } else {
@@ -96,4 +95,38 @@ TuumVision.prototype.calcColorShades = function(pxs, C = 3) {
   }
 
   return shades;
+}
+
+TuumVision.prototype.PixelUVFilterPack = function(pxs) {
+  // Y: [Y, Umin, Umax, Vmin, Vmax]
+  data = {
+
+  }
+
+  for(var p in pxs) {
+    if(!pxs.hasOwnProperty(p)) continue;
+    px = pxs[p];
+
+    if(data.hasOwnProperty(p[0])) {
+      var l_px = data[px[0]];
+
+      l_px[1] = Math.min(l_px[1], px[1]); // Umin
+      l_px[1] = Math.min(l_px[3], px[3]); // Vmin
+
+      l_px[1] = Math.max(l_px[2], px[2]); // Umax
+      l_px[1] = Math.max(l_px[4], px[4]); // Vmax
+
+      data[px[0]] = l_px;
+    } else {
+      data[px[0]] = [px[0], px[1], px[1], px[2], px[2]];
+    }
+  }
+
+  out = [];
+  for(var k in data) {
+    if(!data.hasOwnProperty(k)) continue;
+    out.push(data[k]);
+  }
+
+  return out;
 }

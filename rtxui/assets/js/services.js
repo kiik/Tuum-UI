@@ -11,7 +11,10 @@ angular.module('TuumUI').factory('TuumSrv',
 
     function init() {
       ws = null;
-      ws = new WebSocket("ws://"+"localhost"+":8080/", "ws-json");
+      //var host = "172.19.18.45";
+      //var host = "172.19.20.214"; // ut-public NUC
+      var host = "localhost";
+      ws = new WebSocket("ws://" + host + ":8080/", "ws-json");
 
       ws.onopen = function() {
         console.log("WS connection established.");
@@ -28,7 +31,7 @@ angular.module('TuumUI').factory('TuumSrv',
       };
 
       ws.onmessage = function(message) {
-        Service.listener(message.data);
+        Service.listener(message);
       };
 
     }

@@ -34,6 +34,25 @@ var TuumProtocol = function(TSrv) {
       }, cb);
     }
 
+    srv.visionSetup = function(settings) {
+      var cmd = {
+        'uri': '/vis',
+        'c': 'settings',
+      };
+
+      this.send($.extend(cmd, settings));
+    }
+
+    srv.PipelineConfig = function(settings) {
+      var cmd = {
+        'uri': '/vis',
+        'c': 'pplcnf',
+        'data': settings,
+      };
+
+      this.send(cmd);
+    }
+
     return srv;
   }
 

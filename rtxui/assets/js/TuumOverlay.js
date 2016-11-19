@@ -27,7 +27,6 @@ var VectorPicker = function() {
   this.typeId = VectorPicker.typeId;
 
   var mPos0 = null, mPos1 = null;
-  this.mTarget = null;
   this.onVectorCallback = function() {};
 }
 
@@ -52,10 +51,6 @@ VectorPicker.prototype.calcVector = function(p0, p1) {
   this.onVectorCallback(p0, p1, dp, l);
 
   return 0;
-}
-
-VectorPicker.prototype.setTargetLayer = function(ctx) {
-  //this.mTarget = ctx;
 }
 
 VectorPicker.prototype.onVector = function(cb) {
@@ -133,6 +128,7 @@ var CanvasInputHandler = function(elem) {
 
   mTarget.addEventListener('mousemove', function(evt) {
     mPos = calcMousePos(mTarget, evt);
+    that.emit('mousemove', mPos);
   }, false);
 
   mTarget.addEventListener('mousedown', function(evt) {
@@ -167,12 +163,12 @@ var CanvasInputHandler = function(elem) {
     cbMap[ev] = [cb];
   }
 
-  this.emit = function(ev) {
+  this.emit = function(ev, dat) {
     if(!(cbMap.hasOwnProperty(ev))) return;
 
     for(var cId = 0; cId < cbMap[ev].length; cId++) {
       var cb = cbMap[ev][cId];
-      cb();
+      cb(dat);
     }
   }
 
@@ -181,7 +177,7 @@ var CanvasInputHandler = function(elem) {
 
 
 
-var TuumOverlay = function(canv, w = 640, h = 480) {
+var TuumOverlay = function(canv, w = 1280, h = 720) {
   var mTarget = canv,
       mInput  = CanvasInputHandler(canv);
 
@@ -196,8 +192,9 @@ var TuumOverlay = function(canv, w = 640, h = 480) {
     that.updateDimensions();
   }
 
+  this.getInput = function() { return mInput; }
+
   this.updateDimensions = function() {
-    console.log(w, h);
     mCtx.size(w, h, Processing.P2D);
   }
 

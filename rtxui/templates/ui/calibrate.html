@@ -16,6 +16,10 @@
   top: 0;
 }
 
+.calib-tools input {
+  color: black;
+}
+
 </style>
 
 <div class="grid G1b2">
@@ -38,10 +42,17 @@
   <div class="pull-left calib-tools">
     <ul>
       <li><button ng-click="debug()">Pick color</button></li>
-      <li>Pick range</li>
-      <li>Pick area</li>
+      <li><input type="number" ng-model="pplConfig.FisheyePwr"> <button ng-click="PPLConfigUpdate()">Set</button></li>
     </ul>
 
-    <div><{{ selectedShades }}></div>
+    <div>
+      <span>{{ mousePos }}</span>
+    </div>
+
+    <div>
+      <span ng-repeat="S in selectedShades" style="color:rgb({{S[0]}}, {{S[1]}}, {{S[2]}});">
+        <{{ S }}>
+      </span>
+    </div>
   </div>
 </div>
