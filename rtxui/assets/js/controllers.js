@@ -13,19 +13,29 @@ tuiCtrls.controller('EmptyCtrl', ['$scope', function ($scope) {
 
 
 tuiCtrls.controller('DriveCtrl',
-  ['$scope', '$interval', '$uibModal',
+  ['$scope', '$interval', '$timeout', '$uibModal',
    'TuumInput', 'TuumBot',
-  function ($scope, $int, $mod, TInp, TBot) {
+  function ($scope, $int, $tim, $mod, TInp, TBot) {
     $scope.TBot = TBot;
     $scope.TInp = TInp;
+
+    $scope.ballCount = 0;
 
     $scope.doCharge = function() {
       TBot.doCharge();
     }
 
+    $scope.doKick = function() {
+      TBot.doKick();
+    }
+
+    $scope.setDribbler = function(v) {
+      TBot.setDribbler(v);
+    }
+
     var last_packet = undefined;
 
-    var V = 600, R_v = 130;
+    var V = 10, R_v = 10;
 
     function sendControlCmds(inp, force = false) {
       if(!inp) return;
@@ -51,10 +61,24 @@ tuiCtrls.controller('DriveCtrl',
         sendControlCmds(TInp.controlMap, true);
     }, 250);
 
+    var canv = document.getElementById('fb-field');
+    var rtexFFUI = new RtexFFUI(canv);
+
+    var field_proc_run = true;
+
+    function fieldUpdate() {
+      TBot.EntityFilter.get(function(data) {
+        $scope.ballCount = data.balls;
+        rtexFFUI.updateEntities(data);
+      });
+
+      if(field_proc_run) $tim(fieldUpdate, 500);
+    }
 
     TBot.then(function() {
       console.log(":DriveCtrl: 'TBot' ready.");
       TBot.visionSetup({'threshold': true});
+      fieldUpdate();
     });
 
     $scope.openSettings = function () {
@@ -149,7 +173,7 @@ tuiCtrls.controller('DrvSetCtrl',
 tuiCtrls.controller('CalibCtrl',
   ['$scope', 'TuumBot',
   function ($scope, TBot) {
-    var w = 640, h = 480;
+    var W = 1080, H = 720;
 
     TBot.visionSetup({'threshold': false});
 
@@ -158,14 +182,80 @@ tuiCtrls.controller('CalibCtrl',
 
     var ctx = canv.getContext('2d');
 
-    var gOverlay = new TuumOverlay(canv, w, h);
-    var gVision = new TuumVision(baseCanv, w, h);
+    $scope.vFilter = null;
+    $scope.selRanges = [];
+
+    var VisionFilterUI = function() {
+      this.selectClass(0);
+    }
+
+    VisionFilterUI.prototype.findEntry = function(id) {
+      if($scope.vFilter == null) return null;
+
+      for(var e in $scope.vFilter.classes) {
+        if($scope.vFilter.classes[e].id == id) return $scope.vFilter.classes[e];
+      }
+      return null;
+    }
+
+    VisionFilterUI.prototype.selectClass = function(id) {
+      this.clsId = 0;
+      this.selInfo = null;
+
+      var f = this.findEntry(id);
+      if(f == null) return;
+
+      this.clsId = f.id;
+      this.selInfo = { 'id': f.id, 'name': f.name};
+    }
+
+    VisionFilterUI.prototype.onUpdate = function() {
+      if(this.clsId == 0) return;
+      if($scope.selRange == null) return;
+
+      var that = this;
+      var data = {
+          'id': this.clsId,
+          'range': TuumVision.rangeUnion(this.findEntry(this.clsId).range, $scope.selRange),
+      }
+
+      TBot.VisionFilter.set(data, function(res) {
+        that.reload();
+      });
+    }
+
+    VisionFilterUI.prototype.onSet = function() {
+      //TODO
+    }
+
+    VisionFilterUI.prototype.onClear = function() {
+      $scope.selRanges = [];
+      $scope.selRange = null;
+    }
+
+    VisionFilterUI.prototype.reload = function() {
+      TBot.VisionFilter.get(function(data) {
+        $scope.vFilter = { 'classes': data.classes };
+      });
+    }
+
+    $scope.vFilterUI = new VisionFilterUI();
+
+
+
+    baseCanv.width = W, baseCanv.height = H;
+    canv.width = baseCanv.width, canv.height = baseCanv.height;
+
+    var gOverlay = new TuumOverlay(canv);
+    var gVision = new TuumVision(baseCanv);
 
     gOverlay.getInput().on('mousemove', function(pos) {
       $scope.$apply(function() {
         $scope.mousePos = pos;
       });
     });
+
+    $scope.selectedShades = [];
 
     var t = gOverlay.findTool(VectorPicker);
     if(t != null) {
@@ -177,7 +267,9 @@ tuiCtrls.controller('CalibCtrl',
         var pxs = gVision.getPixelsOnLine(p0, p1);
         if(pxs.length <= 0) return;
 
-        $scope.selectedShades = gVision.PixelUVFilterPack(pxs); //gVision.calcColorShades(pxs);
+        //$scope.selectedShades = $scope.selectedShades.concat(gVision.PixelUVFilterPack(pxs)); //gVision.calcColorShades(pxs);
+        $scope.selRange = gVision.calcRange(pxs);
+        $scope.selRanges.push($scope.selRange);
       });
     }
 
@@ -188,9 +280,12 @@ tuiCtrls.controller('CalibCtrl',
     }
 
     $scope.PPLConfigUpdate = function() {
-      console.log($scope.pplConfig);
       TBot.PipelineConfig($scope.pplConfig);
     }
+
+    TBot.then(function() {
+      $scope.vFilterUI.reload();
+    });
 
   }
 ]);

@@ -101,83 +101,7 @@ VectorPicker.prototype.process = function(ctx) {
 VectorPicker.prototype.typeId = Tool.typeIdSeq++;
 
 
-
-function calcMousePos(c, e) {
-  var rect = c.getBoundingClientRect();
-  return [e.clientX - rect.left, e.clientY - rect.top];
-}
-
-function calcCanvasPos(c, p) {
-  var rect = c.getBoundingClientRect();
-  return [rect.left - p[0], rect.top - p[1]];
-}
-
-var CanvasInputHandler = function(elem) {
-  var mTarget = elem;
-  var mPos = [0, 0];
-
-  var cbMap = {
-
-  };
-
-  var keyMap = {
-
-  };
-
-  var that = this;
-
-  mTarget.addEventListener('mousemove', function(evt) {
-    mPos = calcMousePos(mTarget, evt);
-    that.emit('mousemove', mPos);
-  }, false);
-
-  mTarget.addEventListener('mousedown', function(evt) {
-    keyMap['LMB'] = true;
-    mPos = calcMousePos(mTarget, evt);
-    that.emit('mousedown');
-  }, false);
-
-  mTarget.addEventListener('mouseup', function(evt) {
-    keyMap['LMB'] = false;
-    mPos = calcMousePos(mTarget, evt);
-    that.emit('mouseup');
-  }, false);
-
-
-  this.getMousePos = function() { return mPos; }
-
-  this.getMouseDown = function(k) {
-    if(!(keyMap[k].hasOwnProperty(k))) return false;
-    return keyMap[k];
-  }
-
-
-  this.on = function(ev, cb) {
-    for(var k in cbMap) {
-      if(!(cbMap.hasOwnProperty(k))) continue;
-      if(k != ev) continue;
-      cbMap[ev].push(cb);
-      return;
-    }
-
-    cbMap[ev] = [cb];
-  }
-
-  this.emit = function(ev, dat) {
-    if(!(cbMap.hasOwnProperty(ev))) return;
-
-    for(var cId = 0; cId < cbMap[ev].length; cId++) {
-      var cb = cbMap[ev][cId];
-      cb(dat);
-    }
-  }
-
-  return this;
-}
-
-
-
-var TuumOverlay = function(canv, w = 1280, h = 720) {
+var TuumOverlay = function(canv) {
   var mTarget = canv,
       mInput  = CanvasInputHandler(canv);
 
@@ -195,7 +119,7 @@ var TuumOverlay = function(canv, w = 1280, h = 720) {
   this.getInput = function() { return mInput; }
 
   this.updateDimensions = function() {
-    mCtx.size(w, h, Processing.P2D);
+    mCtx.size(canv.width, canv.height, Processing.P2D);
   }
 
   var mProcJS = new Processing(canv, initPJS);

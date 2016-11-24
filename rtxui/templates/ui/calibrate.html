@@ -1,29 +1,6 @@
 
-
-<style>
-
-.calib-canvas {
-  position: relative;
-  width: 640px;
-  height: 480px;
-}
-.calib-canvas canvas {
-  width: 100%;
-  height: 100%;
-
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.calib-tools input {
-  color: black;
-}
-
-</style>
-
-<div class="grid G1b2">
-  <div class="placeholder">
+<div class="row">
+  <div flex="50" layout="row" layout-padding>
     <span style="font-size:12px;font-style:italic;color:whitesmoke;">Target stream</span>
     <select ng-model="targetDevice">
       <option value="CAM0">CAM0 ('/dev/video1')</option>
@@ -32,27 +9,50 @@
     <button class="tuum-btn tuum-warning" ng-click="grabFrame()">Grab frame</button>
   </div>
 
-  <div class="clearfix"></div>
+  <div layout="row">
+    <section flex=60 layout="column" class="stream-width calib-canvas" layout-padding>
+      <div style="display:flex;position:relative;max-height:70%;padding:0;">
+        <canvas id="calib-overlay" class="overlay-canvas"></canvas>
+        <canvas id="calib-canvas" class="base-canvas">
+        </canvas>
+        <span style="z-index:3;position: absolute;right: 0;font-size: 7px;padding:0; pointer-events:none;">{{ mousePos }}</span>
+      </div>
 
-  <div class="pull-left calib-canvas">
-    <canvas id="calib-canvas"></canvas>
-    <canvas id="calib-overlay"></canvas>
-  </div>
+      <section flex>
+        <md-content>
+          <div>
+            <span ng-if="selRange != null" style="color:rgb({{selRange[0]}}, {{selRange[1]}}, {{selRange[2]}})">{{selRange}}</span>
+            <!--
+            <span ng-repeat="S in selRanges" style="color:rgb({{S[0]}}, {{S[1]}}, {{S[2]}});">
+              {{ S }}
+            </span>-->
+            <span ng-if="selRange == null">No selection.</span>
+          </div>
+          <div class="pull-right">
+            <span ng-if="vFilterUI.selInfo != null" class="tuum-label">{{ vFilterUI.selInfo }}</span>
+            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onUpdate();" class="tuum-btn tuum-success">Update</button>
+            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onClear();" class="tuum-btn tuum-warning">Set</button>
+            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onSet();" class="tuum-btn">Clear</button>
+          </div>
+        </md-content>
+      </section>
+    </section>
 
-  <div class="pull-left calib-tools">
-    <ul>
-      <li><button ng-click="debug()">Pick color</button></li>
-      <li><input type="number" ng-model="pplConfig.FisheyePwr"> <button ng-click="PPLConfigUpdate()">Set</button></li>
-    </ul>
+    <section flex layout="column" class="stream-width calib-tools" layout-padding>
+      <div ng-cloak>
+        <md-content>
+          <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="VFilter">
+              <md-content class="md-padding">
+                <div ng-if="vFilter != null" class="vfilter-rows">
+                  <p ng-repeat="f in vFilter.classes" ng-class="{'sel': vFilterUI.clsId == f.id }" ng-click="vFilterUI.selectClass(f.id);">{{f}}</p>
+                </div>
+              </md-content>
+            </md-tab>
+          </md-tabs>
+        </md-content>
+      </div>
+    </section>
 
-    <div>
-      <span>{{ mousePos }}</span>
-    </div>
-
-    <div>
-      <span ng-repeat="S in selectedShades" style="color:rgb({{S[0]}}, {{S[1]}}, {{S[2]}});">
-        <{{ S }}>
-      </span>
-    </div>
   </div>
 </div>

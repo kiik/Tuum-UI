@@ -1,16 +1,13 @@
 
 
-var TuumVision = function(canvas, w, h) {
+var TuumVision = function(canvas) {
   this.mCanvas = canvas;
   this.mCtx = canvas.getContext('2d');
 
   var that = this;
   function init() {
-    that.mCanvas.width = w;
-    that.mCanvas.height = h;
-
     that.mCtx.beginPath();
-    that.mCtx.rect(0, 0, w, h);
+    that.mCtx.rect(0, 0, canvas.width, canvas.height);
     that.mCtx.fillStyle = "green";
     that.mCtx.fill();
   }
@@ -83,7 +80,7 @@ TuumVision.prototype.calcColorShades = function(pxs, C = 3) {
       err += (px[i] - last_px[i]) / 255.0 / C;
 
     //console.log("Err: " + err);
-    if(err > 0.01) {
+    if(err > 0.001) {
       shades.push([Math.round(shade[0]), Math.round(shade[1]), Math.round(shade[2])]);
       shade = px;
     } else {
@@ -102,7 +99,7 @@ TuumVision.prototype.PixelUVFilterPack = function(pxs) {
   data = {
 
   }
-
+  console.log(pxs);
   for(var p in pxs) {
     if(!pxs.hasOwnProperty(p)) continue;
     px = pxs[p];
@@ -111,12 +108,13 @@ TuumVision.prototype.PixelUVFilterPack = function(pxs) {
       var l_px = data[px[0]];
 
       l_px[1] = Math.min(l_px[1], px[1]); // Umin
-      l_px[1] = Math.min(l_px[3], px[3]); // Vmin
+      l_px[2] = Math.min(l_px[3], px[3]); // Vmin
 
-      l_px[1] = Math.max(l_px[2], px[2]); // Umax
-      l_px[1] = Math.max(l_px[4], px[4]); // Vmax
+      l_px[3] = Math.max(l_px[2], px[2]); // Umax
+      l_px[4] = Math.max(l_px[4], px[4]); // Vmax
 
       data[px[0]] = l_px;
+      console.log("UPDATE:" + l_px);
     } else {
       data[px[0]] = [px[0], px[1], px[1], px[2], px[2]];
     }
@@ -127,6 +125,35 @@ TuumVision.prototype.PixelUVFilterPack = function(pxs) {
     if(!data.hasOwnProperty(k)) continue;
     out.push(data[k]);
   }
+
+  return out;
+}
+
+TuumVision.prototype.calcRange = function(pxs) {
+  var out_mn = [255, 255, 255],
+      out_mx = [0, 0, 0];
+
+  for(var i in pxs) {
+    var px = pxs[i];
+
+    for(var ix = 0; ix < 3; ix++)
+      out_mn[ix] = Math.min(out_mn[ix], px[ix]);
+
+    for(var ix = 0; ix < 3; ix++)
+      out_mx[ix] = Math.max(out_mx[ix], px[ix]);
+  }
+
+  return out_mn.concat(out_mx);
+}
+
+TuumVision.rangeUnion = function(r1, r2) {
+  var out = [255, 255, 255, 0, 0, 0];
+
+  for(var i = 0; i < 3; i++)
+    out[i] = Math.min(r1[i], r2[i])
+
+  for(var i = 3; i < 6; i++)
+    out[i] = Math.max(r1[i], r2[i])
 
   return out;
 }

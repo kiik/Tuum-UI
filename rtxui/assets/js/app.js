@@ -2,6 +2,7 @@
 
 var app = angular.module('TuumUI', [
   'ngRoute',
+  'ngMaterial',
 
   'ui.ace',
 

@@ -131,7 +131,7 @@
 
 <div class="clearfix"></div>
 
-<div>
+<div ng-controller="DriveCtrl">
   <style>
   .field {
     height: 100%;
@@ -141,30 +141,42 @@
     position: absolute;
     right: 0;
     top: 0;
-    color: black;
-    background-color: rgba(255, 255, 255, 0.75);
-    padding: 4px;
+    color: white;
+    background-color: black;
+    padding: 1px;
     margin: 0;
     font-weight: bold;
-    font-size: 9px;
+    font-size: 7px;
+    pointer-events: none;
   }
   .field-data span {
 
   }
+
+  #fb-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
   </style>
-  <div class="col-xs-6 visible-lg" ng-controller="EmptyCtrl">
-    <div class="sect-body">
+  <div class="col-xs-6 visible-lg">
+    <div class="sect-body" style="position:relative;">
       <img class="field" src="/assets/img/fbfield.png" alt="|FIELD|">
       <div class="field-data">
           <span>Goals: 0</span>
-          <span>Balls: 0</span>
+          <span>Balls: {{ballCount}}</span>
           <span>Robots: 0</span>
           <span>Position: -1000, -1000</span>
       </div>
+      <canvas id="fb-field" class="overlay-canvas"></canvas>
     </div>
   </div>
 
-  <div class="col-lg-6 col-xs-12" style="position:relative;" ng-controller="DriveCtrl">
+  <div class="col-lg-6 col-xs-12" style="position:relative;">
     <div class="curtain hidden"></div>
     <div class="sect-body">
       <div class="row-fluid">
@@ -201,11 +213,11 @@
             <div class="btn-li">
               <div class="grp">
                 <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
-                <button class="tuum-btn tuum-warning">Kick</button>
+                <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick</button>
               </div>
 
               <div class="grp">
-                <button class="tuum-btn">Dribbler Start</button>
+                <button class="tuum-btn" ng-click="setDribbler(1)">Dribbler Start</button>
                 <button class="tuum-btn">Dribbler Init</button>
               </div>
 
@@ -260,11 +272,11 @@
           <div class="btn-li">
             <div class="grp">
               <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
-              <button class="tuum-btn tuum-warning">Kick</button>
+              <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick</button>
             </div>
 
             <div class="grp">
-              <button class="tuum-btn">Dribbler Start</button>
+              <button class="tuum-btn" ng-click="setDribbler(1)">Dribbler Start</button>
               <button class="tuum-btn">Dribbler Init</button>
             </div>
 

@@ -78,8 +78,8 @@ html, body {
 }
 
 body {
-  background: linear-gradient(to bottom, #435058, #1c2329);
-  color: #f7ffff;
+  background: linear-gradient(to bottom, #435058, #1c2329) !important;
+  color: #f7ffff !important;
   overflow-y: hidden;
   overflow-x: hidden;
 }
@@ -243,15 +243,20 @@ body > * {
   text-shadow: 1px 1px 5px black;
   transition: all 0.3;
 }
-.tuum-btn:hover {
+.tuum-btn:not([disabled]):hover {
   background-color: #9DA4AE;
 }
-.tuum-btn:active {
+.tuum-btn:not([disabled]):active {
   background-color: #CCD1D9;
   border: 1px solid #AAB2BD;
 }
-.tuum-btn:focus {
+.tuum-btn:not([disabled]):focus {
   border: 1px solid #4FC1E9;
+}
+.tuum-btn[disabled] {
+  background-color: gainsboro;
+  color: gray;
+  text-shadow: none;
 }
 
 
@@ -259,10 +264,10 @@ body > * {
   background-color: #A0D468;
   border: 1px solid #8CC152;
 }
-.tuum-btn.tuum-success:hover {
+.tuum-btn:not([disabled]).tuum-success:hover {
   background-color: #84B154;
 }
-.tuum-btn.tuum-success:active {
+.tuum-btn:not([disabled]).tuum-success:active {
   background-color: #8CC152;
   border: 1px solid #A0D468;
 }
@@ -271,10 +276,10 @@ body > * {
   background-color: #FFCE54;
   border: 1px solid #F6BB42;
 }
-.tuum-btn.tuum-warning:hover {
+.tuum-btn:not([disabled]).tuum-warning:hover {
   background-color: #D8AA37;
 }
-.tuum-btn.tuum-warning:active {
+.tuum-btn:not([disabled]).tuum-warning:active {
   background-color: #F6BB42;
   border: 1px solid #FFCE54;
 }
@@ -283,10 +288,10 @@ body > * {
   background-color: #ED5565;
   border: 1px solid #DA4453;
 }
-.tuum-btn.tuum-dangerous:hover {
+.tuum-btn:not([disabled]).tuum-dangerous:hover {
   background-color: #C3424F;
 }
-.tuum-btn.tuum-dangerous:active {
+.tuum-btn:not([disabled]).tuum-dangerous:active {
   background-color: #DA4453;
   border: 1px solid #ED5565;
 }
@@ -393,4 +398,53 @@ select {
   border: 1px solid #aab2bd;
   font-size: 10px;
   padding: 2px;
+}
+
+
+
+.calib-canvas {
+
+}
+.calib-canvas canvas {
+  width: 100%;
+  height: 100%;
+}
+.calib-canvas .base-canvas {
+  max-width: 1080px;
+  margin-bottom: 75%;
+  padding: 0;
+  pointer-events:none;
+}
+.calib-canvas .overlay-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.calib-tools input {
+  color: black;
+}
+
+.stream-width {
+  box-sizing: border-box;
+  height: 720px;
+}
+
+.vfilter-rows > .sel {
+  background-color: #ecf3ff;
+}
+.vfilter-rows > p {
+  outline: none;
+}
+.vfilter-rows > p:hover {
+  background-color: #f4f8ff;
+}
+
+.tuum-label {
+  border-radius: 4px;
+  padding: 4px;
+  color: white;
+  font-size: 8px;
+  background-color: #106CC8;
+  font-weight: bold;
 }

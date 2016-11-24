@@ -6,6 +6,8 @@ var TuumProtocol = function(TSrv) {
     return gSrv.sendRequest(data, cb);
   }
 
+  var that = this;
+
   var initDriveProtocol = function(srv) {
     srv.omniDrive = function(spd, dir, rot) {
       var data = {
@@ -16,10 +18,7 @@ var TuumProtocol = function(TSrv) {
         r: rot,
       };
 
-      console.log(":DriveProtocol::omniDrive: Send - " + JSON.stringify(data));
-      this.send(data, function(res) {
-        console.log(":DriveProtocol::omniDrive: Response - " + JSON.parse(res));
-      });
+      this.send(data);
     }
 
     return srv;
@@ -53,12 +52,77 @@ var TuumProtocol = function(TSrv) {
       this.send(cmd);
     }
 
+    srv.VisionFilter = {
+      get: function(cb) {
+        var cmd = {
+          'uri': '/vis',
+          'c': 'vf_get',
+        }
+
+        that.send(cmd, cb);
+      },
+      'set': function(data, cb) {
+        var cmd = {
+          'uri': '/vis',
+          'c': 'vf_set',
+          'f': data,
+        }
+
+        that.send(cmd, cb);
+      }
+    }
+
+    srv.EntityFilter = {
+      get: function(cb) {
+        var cmd = {
+          'uri': '/vis',
+          'c': 'ent_get',
+        }
+
+        that.send(cmd, cb);
+      }
+    }
+
     return srv;
   }
 
-  var initCoilProtocol = function(srv) {
-    srv.doCharge = function() {
-      this.send({'c': 'chrg'});
+  var initHardwareProtocol = function(srv) {
+    srv.setDribbler = function(val, cb) {
+      var cmd = {
+        'uri': '/hw',
+        'c': 'dr',
+        'v': val > 0 ? 1 : 0
+      }
+
+      this.send(cmd, cb);
+    }
+
+    srv.doCharge = function(cb) {
+      var cmd = {
+        'uri': '/hw',
+        'c': 'ch',
+      }
+
+      this.send(cmd, cb);
+    }
+
+    srv.doKick = function(cb) {
+      var cmd = {
+        'uri': '/hw',
+        'c': 'kc',
+        'v': 100,
+      }
+
+      this.send(cmd, cb);
+    }
+
+    srv.getBallSensor = function(cb) {
+      var cmd = {
+        'uri': '/hw',
+        'c': 'bl'
+      }
+
+      this.send(cmd, cb);
     }
 
     return srv;
@@ -74,7 +138,7 @@ var TuumProtocol = function(TSrv) {
 
   initDriveProtocol(this);
   initVisionProtocol(this);
-  initCoilProtocol(this);
+  initHardwareProtocol(this);
   initFsProtocol(this);
 
   return this;
