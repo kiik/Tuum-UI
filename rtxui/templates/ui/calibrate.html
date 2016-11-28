@@ -11,7 +11,7 @@
 
   <div layout="row">
     <section flex=60 layout="column" class="stream-width calib-canvas" layout-padding>
-      <div style="display:flex;position:relative;max-height:70%;padding:0;">
+      <div style="display:flex;position:relative;padding:0;">
         <canvas id="calib-overlay" class="overlay-canvas"></canvas>
         <canvas id="calib-canvas" class="base-canvas">
         </canvas>
@@ -31,8 +31,8 @@
           <div class="pull-right">
             <span ng-if="vFilterUI.selInfo != null" class="tuum-label">{{ vFilterUI.selInfo }}</span>
             <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onUpdate();" class="tuum-btn tuum-success">Update</button>
-            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onClear();" class="tuum-btn tuum-warning">Set</button>
-            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onSet();" class="tuum-btn">Clear</button>
+            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onSet();" class="tuum-btn tuum-warning">Set</button>
+            <button ng-disabled="vFilterUI.selInfo == null" ng-click="vFilterUI.onClear();" class="tuum-btn">Clear</button>
           </div>
         </md-content>
       </section>

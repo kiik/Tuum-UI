@@ -411,7 +411,6 @@ select {
 }
 .calib-canvas .base-canvas {
   max-width: 1080px;
-  margin-bottom: 75%;
   padding: 0;
   pointer-events:none;
 }

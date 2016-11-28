@@ -67,18 +67,18 @@ tuiCtrls.controller('DriveCtrl',
     var field_proc_run = true;
 
     function fieldUpdate() {
+      if(!field_proc_run) return;
+
       TBot.EntityFilter.get(function(data) {
         $scope.ballCount = data.balls;
         rtexFFUI.updateEntities(data);
       });
-
-      if(field_proc_run) $tim(fieldUpdate, 500);
     }
 
     TBot.then(function() {
       console.log(":DriveCtrl: 'TBot' ready.");
       TBot.visionSetup({'threshold': true});
-      fieldUpdate();
+      //$int(fieldUpdate, 500);
     });
 
     $scope.openSettings = function () {
@@ -225,7 +225,18 @@ tuiCtrls.controller('CalibCtrl',
     }
 
     VisionFilterUI.prototype.onSet = function() {
-      //TODO
+      if(this.clsId == 0) return;
+      if($scope.selRange == null) return;
+
+      var that = this;
+      var data = {
+          'id': this.clsId,
+          'range': $scope.selRange,
+      }
+
+      TBot.VisionFilter.set(data, function(res) {
+        that.reload();
+      });
     }
 
     VisionFilterUI.prototype.onClear = function() {
