@@ -259,6 +259,17 @@ body > * {
   text-shadow: none;
 }
 
+.tuum-btn.tuum-info {
+  background-color: #4183D7;
+  border: 1px solid #22A7F0;
+}
+.tuum-btn:not([disabled]).tuum-info:hover {
+  background-color: #59ABE3;
+}
+.tuum-btn:not([disabled]).tuum-info:active {
+  background-color: #81CFE0;
+  border: 1px solid #22A7F0;
+}
 
 .tuum-btn.tuum-success {
   background-color: #A0D468;

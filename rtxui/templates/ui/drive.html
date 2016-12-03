@@ -37,7 +37,7 @@
   <div class="col-xs-6 hidden-xs hidden-sm" ng-controller="EmptyCtrl">
     <div class="sect-body row-fluid">
       <div class="col-xs-10 col-tight">
-        <img class="camera-feed" src="http://localhost:8080" alt="|Video stream 'CAM1'|">
+        <img class="camera-feed" src="http://172.19.29.41:8080" alt="|Video stream 'CAM1'|">
       </div>
       <div class="col-xs-6 col-tight hidden">
         <img class="camera-feed" src="" alt="|Video stream 'CAM0'|">
@@ -167,10 +167,11 @@
     <div class="sect-body" style="position:relative;">
       <img class="field" src="/assets/img/fbfield.png" alt="|FIELD|">
       <div class="field-data">
-          <span>Goals: 0</span>
-          <span>Balls: {{ballCount}}</span>
-          <span>Robots: 0</span>
-          <span>Position: -1000, -1000</span>
+        <span>{{motionData}}</span>
+        <span>Goals: 0</span>
+        <span>Balls: {{ballCount}}</span>
+        <span>Robots: 0</span>
+        <span>Position: -1000, -1000</span>
       </div>
       <canvas id="fb-field" class="overlay-canvas"></canvas>
     </div>
@@ -206,6 +207,11 @@
         </div>
 
         <div class="col-xs-6">
+
+          <span class="pull-right" ng-switch="thresholdType">
+            <button class="tuum-btn tuum-info" ng-switch-when="CPU" ng-click="setGPUEnable(true)">CPU</button>
+            <button class="tuum-btn tuum-success" ng-switch-when="GPU" ng-click="setGPUEnable(false)">GPU</button>
+          </span>
 
           <img class="visible-lg visible-md robot-thumbnail" src="/assets/img/robot.png">
 

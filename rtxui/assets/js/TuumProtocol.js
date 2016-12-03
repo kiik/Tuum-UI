@@ -21,6 +21,15 @@ var TuumProtocol = function(TSrv) {
       this.send(data);
     }
 
+    srv.getMotionInfo = function(cb) {
+      var data = {
+        uri: '/drv',
+        c: 'info',
+      };
+
+      this.send(data, cb);
+    }
+
     return srv;
   }
 
@@ -42,14 +51,16 @@ var TuumProtocol = function(TSrv) {
       this.send($.extend(cmd, settings));
     }
 
-    srv.PipelineConfig = function(settings) {
+    srv.vConfig = function(settings, cb) {
       var cmd = {
         'uri': '/vis',
         'c': 'pplcnf',
-        'data': settings,
       };
 
-      this.send(cmd);
+      if(settings != null)
+        cmd["data"] = settings;
+
+      this.send(cmd, cb);
     }
 
     srv.VisionFilter = {

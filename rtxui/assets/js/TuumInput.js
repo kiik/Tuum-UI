@@ -68,11 +68,11 @@ angular.module('TuumUI').factory('TuumInput',
       }
 
       Service.inputUpdateProcess = function() {
-        this.controlMap.pwr = m_pad.axes[3] * -100; // Power - left stick (up/down)
-        this.controlMap.rot = m_pad.axes[1] * -1;      // Joint control - right stick
-        this.controlMap.dfd = m_pad.axes[0];      // Differential drive - left stick
+        this.controlMap.spd = m_pad.axes[3]; // Power - left stick (up/down)
+        this.controlMap.dir = m_pad.axes[1];      // Joint control - right stick
+        this.controlMap.rot = m_pad.axes[0];      // Differential drive - left stick
 
-        this.controlMap.dir  = m_pad.buttons[1].value == 1 ? 0 : m_pad.buttons[0].value == 1 ? 1 : m_pad.buttons[2].value == 1 ? -1 :this.controlMap.dir; // Direction control
+        //this.controlMap.dir  = m_pad.buttons[1].value == 1 ? 0 : m_pad.buttons[0].value == 1 ? 1 : m_pad.buttons[2].value == 1 ? -1 :this.controlMap.dir; // Direction control
         this.controlMap.lck = m_pad.buttons[7].value;
 
         if(Date.now() > t0) {

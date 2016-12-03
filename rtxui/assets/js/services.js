@@ -9,11 +9,11 @@ angular.module('TuumUI').factory('TuumSrv',
     var ws;
     var onopen_cbs = [];
 
+    var host = "172.19.29.41"; // TuumBot1
+    //var host = "172.19.27.28"; // TuumBot2
+    //var host = "localhost";
+
     function init() {
-      ws = null;
-      //var host = "172.19.18.45";
-      //var host = "172.19.20.214"; // ut-public NUC
-      var host = "localhost";
       ws = new WebSocket("ws://" + host + ":8080/", "ws-json");
 
       ws.onopen = function() {
@@ -21,9 +21,6 @@ angular.module('TuumUI').factory('TuumSrv',
 
         onopen_cbs.forEach(function(cb) {cb(Service)});
         onopen_cbs = [];
-
-        //ws.send(JSON.stringify({c: 'ping'}));
-        //ws.send(JSON.stringify({c: 'ctl', s: 5.0, d: 1.57, r: 20.0}));
       };
 
       ws.onclose = function(){
@@ -93,6 +90,7 @@ angular.module('TuumUI').factory('TuumSrv',
     var TSrv = new TuumProtocol(Service);
     TSrv.then = Service.then;
     TSrv.isReady = Service.isReady;
+    TSrv.host = host;
 
     return TSrv;
 }]);
@@ -123,6 +121,8 @@ angular.module('TuumUI').factory('TuumBot',
       else
         Model.then(syncProcess);
     }
+
+    Model.host = TSrv.host;
 
     syncProcess();
 

@@ -35,7 +35,7 @@ tuiCtrls.controller('DriveCtrl',
 
     var last_packet = undefined;
 
-    var V = 10, R_v = 10;
+    var V = 60, R_v = 90;
 
     function sendControlCmds(inp, force = false) {
       if(!inp) return;
@@ -47,7 +47,7 @@ tuiCtrls.controller('DriveCtrl',
       }
 
       if(!_.isEqual(last_packet, inp) || force) {
-        TBot.omniDrive(inp.spd * V, inp.dir * -1, inp.rot * R_v);
+        TBot.omniDrive(inp.spd * V, inp.dir, inp.rot * R_v);
         last_packet = $.extend({},inp);
       }
     }
@@ -73,13 +73,38 @@ tuiCtrls.controller('DriveCtrl',
         $scope.ballCount = data.balls;
         rtexFFUI.updateEntities(data);
       });
+
+      TBot.getMotionInfo(function(data) {
+        $scope.motionData = data.motion;
+      });
+    }
+
+    function vconf_refresh(data) {
+      if(data.gpu_en) $scope.thresholdType = "GPU";
+      else $scope.thresholdType = "CPU";
     }
 
     TBot.then(function() {
+      TBot.vConfig({'thr_en': true}, function(data) {
+        if(!data.hasOwnProperty("gpu_en")) {
+          $scope.thresholdType = "None";
+          return;
+        }
+
+        vconf_refresh(data);
+      });
+
+      $int(fieldUpdate, 1000);
       console.log(":DriveCtrl: 'TBot' ready.");
-      TBot.visionSetup({'threshold': true});
-      //$int(fieldUpdate, 500);
     });
+
+    $scope.setGPUEnable = function(v) {
+      if((v != true) && (v != false)) return;
+
+      TBot.vConfig({'gpu_en': v}, function(data) {
+        vconf_refresh(data);
+      });
+    }
 
     $scope.openSettings = function () {
       var modalInstance = $mod.open({
@@ -175,7 +200,7 @@ tuiCtrls.controller('CalibCtrl',
   function ($scope, TBot) {
     var W = 1080, H = 720;
 
-    TBot.visionSetup({'threshold': false});
+    TBot.vConfig({'thr_en': false});
 
     var baseCanv = document.getElementById('calib-canvas'),
         canv = document.getElementById('calib-overlay');
@@ -226,7 +251,7 @@ tuiCtrls.controller('CalibCtrl',
 
     VisionFilterUI.prototype.onSet = function() {
       if(this.clsId == 0) return;
-      if($scope.selRange == null) return;
+      if($scope.selRange == null) $scope.selRange = [0, 0, 0, 0, 0, 0];
 
       var that = this;
       var data = {
@@ -242,6 +267,7 @@ tuiCtrls.controller('CalibCtrl',
     VisionFilterUI.prototype.onClear = function() {
       $scope.selRanges = [];
       $scope.selRange = null;
+      this.onSet();
     }
 
     VisionFilterUI.prototype.reload = function() {
@@ -290,8 +316,8 @@ tuiCtrls.controller('CalibCtrl',
       })
     }
 
-    $scope.PPLConfigUpdate = function() {
-      TBot.PipelineConfig($scope.pplConfig);
+    $scope.updateVisionConfig = function() {
+      TBot.vConfig($scope.vConfig);
     }
 
     TBot.then(function() {
