@@ -1,38 +1,65 @@
 
-var path = require('path');
-var logger = require('morgan');
+const path = require('path');
+const express = require('express');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
 
-var express = require('express');
-var _io = require('socket.io');
+const libtuumui = require('libtuumui-njs');
 
+const factory = libtuumui.factory;
+const help = libtuumui.help;
 
-function arraysEqual(a1,a2) {
-    return JSON.stringify(a1)==JSON.stringify(a2);
-}
+const config = require('../config');
 
 module.exports = {
-  'create_app': function(env) {
-    var helpers = env.helpers,
-        factory = env.factory;
+  'create_app': function() {
+    var app = factory.app_factory(config);
 
-    var app = factory.create_app(__dirname);
+    app.use(favicon(path.join(__dirname, 'assets', 'img', 'favicon.ico')));
 
-    app.sio = _io;
+    var assetLibs = help.load_assets(app, __dirname);
+    var assets = [
+      'js/CanvasInput.js',
+      'js/TuumInput.js',
 
-    app.register_sio = function(server) {
-      var io = _io.listen(server);
+      'js/TuumOverlay.js',
+      'js/TuumProtocol.js',
+      'js/TuumVision.js',
 
-      io.sockets.on('connection', function (socket) {
-        console.log('New socket.io connection!');
+      'js/ng/srv.js',
+      'js/ng/ctl.js',
+      'js/ng/app.js',
+    ];
 
-        socket.on('error', function(data) {
-          console.log(data);
-        });
+    assetLibs.forEach(function(lib) {
+      function libPathFormat(input) {
+        return path.join('lib/', lib.name, input);
+      }
+
+      lib.css.forEach(function(elm) {
+        assets.push(libPathFormat(elm));
       });
-    }
 
-    helpers.load_routes(app, __dirname);
-    helpers.load_assets(app, __dirname);
+      lib.js.forEach(function(elm) {
+        assets.push(libPathFormat(elm));
+      });
+    });
+
+    libtuumui.config.setupAssets(config, {
+      assetBasePath: __dirname,
+      assetDir: path.join(__dirname, './assets'),
+      assets: assets,
+    });
+
+    app.use(config.assets.urlPrefix, express.static(config.assets.assetDir));
+
+    console.log({assetDir:config.assets.assetDir});
+    console.log(config.assets.get());
+
+    app.set('views', path.join(__dirname, './views'));
+    app.set('view engine', 'pug');
+
+    require('./ui').setup(app);
 
     // Catch 404 and forward to error handler
     app.use(function(req, res, next) {

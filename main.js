@@ -2,7 +2,7 @@
 
 const libtuumui = require('libtuumui-njs');
 
-const app = require('./src');
+const factory = require('./src');
 
 
 var gApp = null,
@@ -10,7 +10,7 @@ var gApp = null,
 
 
 function setup() {
-  gApp = app.factory();
+  gApp = factory.create_app();
   gSrv = libtuumui.serve_http(gApp);
 
   gSrv.listen(9080, function listening() {

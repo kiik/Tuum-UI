@@ -9,8 +9,11 @@ function time() {
   return d;
 }
 
+var ngTuumInput = angular.module('TuumInput', [
 
-angular.module('TuumUI').factory('TuumInput',
+]);
+
+ngTuumInput.factory('TuumInput',
   ['$location', '$interval',
   function($loc, $int) {
     console.log(":load: TuumUI::TuumInput");

@@ -1,5 +1,9 @@
 
-angular.module('TuumUI').factory('TuumSrv',
+var ngSrv = angular.module('TuumSrv', [
+
+]);
+
+ngSrv.factory('TuumComm',
   ['$q', '$rootScope', '$location', '$timeout',
   function($q, $rootScope, $loc, $tim) {
     var Service = {};
@@ -96,8 +100,8 @@ angular.module('TuumUI').factory('TuumSrv',
 }]);
 
 
-angular.module('TuumUI').factory('TuumBot',
-  ['$location', '$timeout', 'TuumSrv',
+ngSrv.factory('TuumBot',
+  ['$location', '$timeout', 'TuumComm',
   function($loc, $tim, TSrv) {
     console.log(":load: TuumUI::TBot");
 

@@ -8,11 +8,12 @@
     "cookie-parser": "~1.4.3",
     "express": "~4.14.0",
     "jade": "^1.11.0",
+    "libtuumui-njs": "git+https://github.com/kiik/libtuumui-njs.git#npm",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "sequelize": "~3.24.3",
-    "socket.io": "^1.5.1",
-    "libtuumui-njs": "git+https://github.com/kiik/libtuumui-njs.git#npm"
+    "serve-favicon": "^2.4.5",
+    "socket.io": "^1.5.1"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,18 +1,20 @@
 'use strict';
 
-var tuiCtrls = angular.module('TuumUICtrls', [
+var ngCtl = angular.module('TuumCtrl', [
   'ui.bootstrap',
+
+  'TuumSrv',
 ]);
 
 
 var seq = 0;
 
-tuiCtrls.controller('EmptyCtrl', ['$scope', function ($scope) {
+ngCtl.controller('EmptyCtrl', ['$scope', function ($scope) {
   $scope.id = seq++;
 }]);
 
 
-tuiCtrls.controller('DriveCtrl',
+ngCtl.controller('DriveCtrl',
   ['$scope', '$interval', '$timeout', '$uibModal',
    'TuumInput', 'TuumBot',
   function ($scope, $int, $tim, $mod, TInp, TBot) {
@@ -132,7 +134,7 @@ tuiCtrls.controller('DriveCtrl',
 
 
 
-tuiCtrls.controller('ControlPanel',
+ngCtl.controller('ControlPanel',
   ['$scope', 'TuumInput',
   function ($scope, TInp) {
     console.log("load control panel");
@@ -158,7 +160,7 @@ tuiCtrls.controller('ControlPanel',
 ]);
 
 
-tuiCtrls.controller('DrvSetCtrl',
+ngCtl.controller('DrvSetCtrl',
   ['$uibModalInstance', '$scope', 'TuumInput',
   function ($Mod, $scope, TInp) {
 
@@ -195,7 +197,7 @@ tuiCtrls.controller('DrvSetCtrl',
   }
 ]);
 
-tuiCtrls.controller('CalibCtrl',
+ngCtl.controller('CalibCtrl',
   ['$scope', 'TuumBot',
   function ($scope, TBot) {
     var W = 1080, H = 720;
@@ -329,7 +331,7 @@ tuiCtrls.controller('CalibCtrl',
 
 
 
-tuiCtrls.controller('DevelopCtrl',
+ngCtl.controller('DevelopCtrl',
   ['$scope',
   function ($scope) {
     var f_id_seq = 1;
