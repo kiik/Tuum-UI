@@ -1,5 +1,5 @@
 {
-  "name": "Tuum Robotex UI",
+  "name": "TuumRobotexUI",
   "version": "0.0.1",
   "description": "",
   "main": "app.js",
@@ -11,7 +11,8 @@
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "sequelize": "~3.24.3",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "libtuumui-njs": "git+https://github.com/kiik/libtuumui-njs.git#npm"
   },
   "devDependencies": {},
   "scripts": {
