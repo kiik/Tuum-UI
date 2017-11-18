@@ -23,8 +23,32 @@ ngCtl.controller('DriveCtrl',
 
     $scope.ballCount = 0;
 
+    //TODO: get dia state
+    $scope.diaState = false;
+
     $scope.doCharge = function() {
       TBot.doCharge();
+    }
+
+    $scope.doPitcherSA = function(speed, angle) {
+      console.log("doPitcherSA()" + speed + " " + angle);
+      //TBot.doPitcherSA(speed, angle);
+    }
+
+    $scope.doPitcherD = function(distance) {
+      console.log("doPitcherD()" + distance);
+      //TBot.doPitcherD(distance);
+    }
+
+    
+    $scope.doDiaState = function(state) {
+      console.log("doDiaState()" + state);
+
+      if($scope.diaState != state){
+        $scope.diaState = state;
+        //TBot.doDiaState($scope.diaState);
+      }
+
     }
 
     $scope.doKick = function() {

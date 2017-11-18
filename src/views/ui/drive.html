@@ -82,6 +82,7 @@
           </ul>
         </div>
       </div>
+      <!--
       <p>
         <div style="margin-right: 40px;" class="placeholder">
           <h4 style="font-size:12px;font-style:italic;color:whitesmoke;">Logic manager</h4>
@@ -124,7 +125,7 @@
         </select>
         <button class="tuum-btn tuum-warning">Apply</button>
       </div>
-
+      -->
     </div>
   </div>
 </div>
@@ -231,6 +232,38 @@
                 <button class="tuum-btn tuum-success">Ping motors</button>
               </div>
             </div>
+
+            <div class="btn-li">
+              <div class="grp">
+                <h4>Pitcher</h4>
+                
+                <div class="form-inline">
+                  <div class="form-group">
+                    <label for="pitcher-speed">Speed</label>
+                    <input type="number" class="form-control input-sm" id="pitcher-speed" ng-model="pitcher.speed" class="form-control" min="0" max="100" step="1" ng-init="pitcher.speed=50" />
+                  </div>
+                  <div class="form-group">
+                    <label for="pitcher-angle">Angle</label>
+                    <input type="number" class="form-control input-sm" id="pitcher-angle" ng-model="pitcher.angle" class="form-control" min="0" max="100" step="1" ng-init="pitcher.angle=50" />
+                  </div>
+                  <button class="tuum-btn tuum-success" ng-click="doPitcherSA(pitcher.speed, pitcher.angle)">Send</button>
+                </div>
+                <br>
+                <div class="form-inline">
+                  <div class="form-group">
+                    <label for="pitcher-distance">Distance</label>
+                    <input type="number" class="form-control input-sm" id="pitcher-distance" ng-model="pitcher.distance" class="form-control" min="0" step="1" ng-init="pitcher.distance=5" />
+                  </div>
+                  <button class="tuum-btn tuum-success" ng-click="doPitcherD(pitcher.distance)">Send</button>
+                </div>
+                <br>
+                <div class="form-inline">
+                  <button class="tuum-btn tuum-success" ng-show="!diaState" ng-click="doDiaState(true)">Dia ON</button>
+                  <button class="tuum-btn tuum-dangerous" ng-show="diaState" ng-click="doDiaState(false)">Dia OFF</button>
+                </div>
+
+              </div>
+           </div>
           </div>
 
           <br/>
@@ -278,7 +311,7 @@
           <div class="btn-li">
             <div class="grp">
               <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
-              <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick</button>
+              <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick!!!</button>
             </div>
 
             <div class="grp">
@@ -289,8 +322,45 @@
             <div class="grp">
               <button class="tuum-btn tuum-success">Ping motors</button>
             </div>
+
+            
+
           </div>
         </div>
+        <div class="col-xs-10 visible-md visible-lg">
+          <div class="btn-li">
+            <div class="grp">
+              <h4>Pitcher</h4>
+              
+              <div class="form-inline">
+                <div class="form-group">
+                  <label for="pitcher-speed">Speed</label>
+                  <input type="number" class="form-control input-sm" id="pitcher-speed" ng-model="pitcher.speed" class="form-control" min="0" max="100" step="1" ng-init="pitcher.speed=50" />
+                </div>
+                <div class="form-group">
+                  <label for="pitcher-angle">Angle</label>
+                  <input type="number" class="form-control input-sm" id="pitcher-angle" ng-model="pitcher.angle" class="form-control" min="0" max="100" step="1" ng-init="pitcher.angle=50" />
+                </div>
+                <button class="tuum-btn tuum-success" ng-click="doPitcherSA(pitcher.speed, pitcher.angle)">Send</button>
+              </div>
+              <br>
+              <div class="form-inline">
+                <div class="form-group">
+                  <label for="pitcher-distance">Distance</label>
+                  <input type="number" class="form-control input-sm" id="pitcher-distance" ng-model="pitcher.distance" class="form-control" min="0" step="1" ng-init="pitcher.distance=5" />
+                </div>
+                <button class="tuum-btn tuum-success" ng-click="doPitcherD(pitcher.distance)">Send</button>
+              </div>
+              <br>
+              <div class="form-inline">
+                <button class="tuum-btn tuum-success" ng-show="!diaState" ng-click="doDiaState(true)">Dia ON</button>
+                <button class="tuum-btn tuum-dangerous" ng-show="diaState" ng-click="doDiaState(false)">Dia OFF</button>
+              </div>
+
+            </div>
+         </div>
+        </div> 
+
       </div>
     </div>
   </div>
