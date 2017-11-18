@@ -61,6 +61,10 @@ module.exports = {
 
     require('./ui').setup(app);
 
+    app.get('/', function(req, res, next) {
+      res.redirect('/ui');
+    });
+
     // Catch 404 and forward to error handler
     app.use(function(req, res, next) {
       var err = new Error('Not Found');
