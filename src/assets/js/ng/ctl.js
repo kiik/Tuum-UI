@@ -16,9 +16,24 @@ ngCtl.controller('EmptyCtrl', ['$scope', function ($scope) {
 
 ngCtl.controller('DriveCtrl',
   ['$scope', '$interval', '$timeout', '$uibModal',
-   'TuumInput', 'TuumBot',
-  function ($scope, $int, $tim, $mod, TInp, TBot) {
-    $scope.TBot = TBot;
+   'TuumInput', 'TuumAgent',
+  function ($scope, $int, $tim, $mod, TInp, agent) {
+
+    function bindAgent(ctx, agent)
+    {
+
+    }
+
+    agent.when('ready', function() {
+      /*
+      agent.comm.getControlMode().then(function(data) {
+        if(data.ctlm != 'MANUAL') $loc.path('/control-panel');
+      });
+      */
+      console.log('[DriveCtrl] Tuum agent ready.');
+    });
+
+    $scope.TBot = agent;
     $scope.TInp = TInp;
 
     $scope.ballCount = 0;
@@ -27,36 +42,36 @@ ngCtl.controller('DriveCtrl',
     $scope.diaState = false;
 
     $scope.doCharge = function() {
-      TBot.doCharge();
+      agent.comm.doCharge();
     }
 
     $scope.doPitcherSA = function(speed, angle) {
       console.log("doPitcherSA()" + speed + " " + angle);
-      //TBot.doPitcherSA(speed, angle);
+      //agent.comm.doPitcherSA(speed, angle);
     }
 
     $scope.doPitcherD = function(distance) {
       console.log("doPitcherD()" + distance);
-      //TBot.doPitcherD(distance);
+      //agent.comm.doPitcherD(distance);
     }
 
-    
+
     $scope.doDiaState = function(state) {
       console.log("doDiaState()" + state);
 
       if($scope.diaState != state){
         $scope.diaState = state;
-        //TBot.doDiaState($scope.diaState);
+        //agent.comm.doDiaState($scope.diaState);
       }
 
     }
 
     $scope.doKick = function() {
-      TBot.doKick();
+      agent.comm.doKick();
     }
 
     $scope.setDribbler = function(v) {
-      TBot.setDribbler(v);
+      agent.comm.setDribbler(v);
     }
 
     var last_packet = undefined;
@@ -73,7 +88,7 @@ ngCtl.controller('DriveCtrl',
       }
 
       if(!_.isEqual(last_packet, inp) || force) {
-        TBot.omniDrive(inp.spd * V, inp.dir, inp.rot * R_v);
+        if(agent.isReady()) agent.comm.omniDrive(inp.spd * V, inp.dir, inp.rot * R_v);
         last_packet = $.extend({},inp);
       }
     }
@@ -95,14 +110,15 @@ ngCtl.controller('DriveCtrl',
     function fieldUpdate() {
       if(!field_proc_run) return;
 
-      TBot.EntityFilter.get(function(data) {
+      /*
+      agent.comm.EntityFilter.get(function(data) {
         $scope.ballCount = data.balls;
         rtexFFUI.updateEntities(data);
       });
 
-      TBot.getMotionInfo(function(data) {
+      agent.comm.getMotionInfo(function(data) {
         $scope.motionData = data.motion;
-      });
+      });*/
     }
 
     function vconf_refresh(data) {
@@ -110,8 +126,9 @@ ngCtl.controller('DriveCtrl',
       else $scope.thresholdType = "CPU";
     }
 
-    TBot.then(function() {
-      TBot.vConfig({'thr_en': true}, function(data) {
+    /*
+    agent.comm.then(function() {
+      agent.comm.vConfig({'thr_en': true}, function(data) {
         if(!data.hasOwnProperty("gpu_en")) {
           $scope.thresholdType = "None";
           return;
@@ -127,7 +144,7 @@ ngCtl.controller('DriveCtrl',
     $scope.setGPUEnable = function(v) {
       if((v != true) && (v != false)) return;
 
-      TBot.vConfig({'gpu_en': v}, function(data) {
+      agent.comm.vConfig({'gpu_en': v}, function(data) {
         vconf_refresh(data);
       });
     }
@@ -152,6 +169,7 @@ ngCtl.controller('DriveCtrl',
         console.log('Modal dismissed at: ' + new Date());
       });
     };
+    */
 
   }
 ]);
@@ -222,11 +240,11 @@ ngCtl.controller('DrvSetCtrl',
 ]);
 
 ngCtl.controller('CalibCtrl',
-  ['$scope', 'TuumBot',
-  function ($scope, TBot) {
+  ['$scope', 'TuumAgent',
+  function ($scope, agent) {
     var W = 1080, H = 720;
 
-    TBot.vConfig({'thr_en': false});
+    agent.comm.vConfig({'thr_en': false});
 
     var baseCanv = document.getElementById('calib-canvas'),
         canv = document.getElementById('calib-overlay');
@@ -270,7 +288,7 @@ ngCtl.controller('CalibCtrl',
           'range': TuumVision.rangeUnion(this.findEntry(this.clsId).range, $scope.selRange),
       }
 
-      TBot.VisionFilter.set(data, function(res) {
+      agent.comm.VisionFilter.set(data, function(res) {
         that.reload();
       });
     }
@@ -285,7 +303,7 @@ ngCtl.controller('CalibCtrl',
           'range': $scope.selRange,
       }
 
-      TBot.VisionFilter.set(data, function(res) {
+      agent.comm.VisionFilter.set(data, function(res) {
         that.reload();
       });
     }
@@ -297,7 +315,7 @@ ngCtl.controller('CalibCtrl',
     }
 
     VisionFilterUI.prototype.reload = function() {
-      TBot.VisionFilter.get(function(data) {
+      agent.comm.VisionFilter.get(function(data) {
         $scope.vFilter = { 'classes': data.classes };
       });
     }
@@ -337,16 +355,16 @@ ngCtl.controller('CalibCtrl',
     }
 
     $scope.grabFrame = function() {
-      TBot.getFrame(function(dat) {
+      agent.comm.getFrame(function(dat) {
         gVision.renderFrame(dat.frame);
       })
     }
 
     $scope.updateVisionConfig = function() {
-      TBot.vConfig($scope.vConfig);
+      agent.comm.vConfig($scope.vConfig);
     }
 
-    TBot.then(function() {
+    agent.comm.then(function() {
       $scope.vFilterUI.reload();
     });
 

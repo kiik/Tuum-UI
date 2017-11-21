@@ -3,6 +3,7 @@ var ngSrv = angular.module('TuumSrv', [
 
 ]);
 
+/*
 ngSrv.factory('TuumComm',
   ['$q', '$rootScope', '$location', '$timeout',
   function($q, $rootScope, $loc, $tim) {
@@ -13,12 +14,12 @@ ngSrv.factory('TuumComm',
     var ws;
     var onopen_cbs = [];
 
-    var host = "172.19.29.41"; // TuumBot1
+    //var host = "172.19.29.41"; // TuumBot1
     //var host = "172.19.27.28"; // TuumBot2
-    //var host = "localhost";
+    var host = "localhost";
 
     function init() {
-      ws = new WebSocket("ws://" + host + ":8080/", "ws-json");
+      ws = new WebSocket("ws://" + host + ":8079/", "ws-json");
 
       ws.onopen = function() {
         console.log("WS connection established.");
@@ -131,5 +132,16 @@ ngSrv.factory('TuumBot',
     syncProcess();
 
     return Model;
+  }
+]);*/
+
+
+ngSrv.factory('TuumAgent',
+  ['$location', '$timeout',
+  function($loc, $tim) {
+
+    var device = Tuum.deviceConnect({name: 'TuumAgent', local_ip: 'localhost'});
+
+    return device;
   }
 ]);

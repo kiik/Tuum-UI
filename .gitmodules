@@ -1,0 +1,3 @@
+[submodule "src/assets/lib/libtuum-client-js"]
+	path = src/assets/lib/libtuum-client-js
+	url = https://github.com/kiik/libtuum-client-js.git
