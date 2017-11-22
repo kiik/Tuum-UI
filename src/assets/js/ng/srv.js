@@ -140,7 +140,8 @@ ngSrv.factory('TuumAgent',
   ['$location', '$timeout',
   function($loc, $tim) {
 
-    var device = Tuum.deviceConnect({name: 'TuumAgent', local_ip: 'localhost'});
+    var ip = '192.168.1.105';
+    var device = Tuum.deviceConnect({name: 'TuumAgent', localIP: ip});
 
     return device;
   }

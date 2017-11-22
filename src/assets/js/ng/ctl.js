@@ -48,6 +48,10 @@ ngCtl.controller('DriveCtrl',
     $scope.doPitcherSA = function(speed, angle) {
       console.log("doPitcherSA()" + speed + " " + angle);
       //agent.comm.doPitcherSA(speed, angle);
+
+      agent.comm.pitcherSet(speed, angle).then(function(data) {
+        console.log(data);
+      });
     }
 
     $scope.doPitcherD = function(distance) {
