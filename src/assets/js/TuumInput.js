@@ -1,7 +1,7 @@
 
 
 function millis() {
-  return 0;
+  return Date.now();
 }
 
 function time() {

@@ -184,6 +184,7 @@
       <div class="row-fluid">
 
         <div class="col-xs-4">
+          <!--
           <div class="indics-dir noselect">
             <div class="power-bar">
               <span class="indic-green">||||||||||</span>
@@ -205,6 +206,30 @@
               <span>&sime;</span>
             </div>
           </div>
+          -->
+          <div class="btn-li">
+              <div class="grp">
+                <h4>Drive params</h4>
+                
+                <div class="form-inline">
+                  <div class="form-group">
+                    <label for="drive-acceleration">Acceleration</label>
+                    <input type="number" class="form-control input-sm" id="drive-acceleration" ng-model="drive.acceleration" class="form-control" min="1" step="1" />
+                  </div>
+                  <div class="form-group">
+                    <label for="drive-max">Max velocity</label>
+                    <input type="number" class="form-control input-sm" id="drive-max" ng-model="drive.maxVelocity" class="form-control" min="0" step="1" />
+                  </div>
+                </div>
+                <div class="form-inline">
+                  <button class="tuum-btn tuum-success" ng-show="drive.controlsEnabled" ng-click="doDriveControlsEnabled(false)">Drive controls ON</button>
+                  <button class="tuum-btn tuum-dangerous" ng-show="!drive.controlsEnabled" ng-click="doDriveControlsEnabled(true)">Drive controls OFF</button>
+                </div>
+
+              </div>
+           </div>
+          </div>
+
         </div>
 
         <div class="col-xs-6">
@@ -247,6 +272,7 @@
                     <input type="number" class="form-control input-sm" id="pitcher-angle" ng-model="pitcher.angle" class="form-control" min="0" max="100" step="1" ng-init="pitcher.angle=50" />
                   </div>
                   <button class="tuum-btn tuum-success" ng-click="doPitcherSA(pitcher.speed, pitcher.angle)">Send</button>
+                  <button class="tuum-btn tuum-warning" ng-click="doPitcherSA(0, 0)">Stop</button>
                 </div>
                 <br>
                 <div class="form-inline">
@@ -258,8 +284,11 @@
                 </div>
                 <br>
                 <div class="form-inline">
-                  <button class="tuum-btn tuum-success" ng-show="!diaState" ng-click="doDiaState(true)">Dia ON</button>
-                  <button class="tuum-btn tuum-dangerous" ng-show="diaState" ng-click="doDiaState(false)">Dia OFF</button>
+                  <button class="tuum-btn tuum-success" ng-show="!pitcher.diaState" ng-click="doDiaState(true)">Dia ON</button>
+                  <button class="tuum-btn tuum-dangerous" ng-show="pitcher.diaState" ng-click="doDiaState(false)">Dia OFF</button>
+          
+                  <button class="tuum-btn tuum-success" ng-show="!pitcher.ping" ng-click="doPitcherPing(true)">Ping</button>
+                  <button class="tuum-btn tuum-dangerous" ng-show="pitcher.ping" ng-click="doPitcherPing(false)">Pinging</button>
                 </div>
 
               </div>
@@ -311,7 +340,7 @@
           <div class="btn-li">
             <div class="grp">
               <button class="tuum-btn tuum-dangerous" ng-click="doCharge()">Charge</button>
-              <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick!!!</button>
+              <button class="tuum-btn tuum-warning" ng-click="doKick()">Kick</button>
             </div>
 
             <div class="grp">
@@ -342,6 +371,7 @@
                   <input type="number" class="form-control input-sm" id="pitcher-angle" ng-model="pitcher.angle" class="form-control" min="0" max="100" step="1" ng-init="pitcher.angle=50" />
                 </div>
                 <button class="tuum-btn tuum-success" ng-click="doPitcherSA(pitcher.speed, pitcher.angle)">Send</button>
+                <button class="tuum-btn tuum-warning" ng-click="doPitcherSA(0, 0)">Stop</button>
               </div>
               <br>
               <div class="form-inline">
@@ -353,8 +383,11 @@
               </div>
               <br>
               <div class="form-inline">
-                <button class="tuum-btn tuum-success" ng-show="!diaState" ng-click="doDiaState(true)">Dia ON</button>
-                <button class="tuum-btn tuum-dangerous" ng-show="diaState" ng-click="doDiaState(false)">Dia OFF</button>
+                <button class="tuum-btn tuum-success" ng-show="!pitcher.diaState" ng-click="doDiaState(true)">Dia ON</button>
+                <button class="tuum-btn tuum-dangerous" ng-show="pitcher.diaState" ng-click="doDiaState(false)">Dia OFF</button>
+
+                <button class="tuum-btn tuum-success" ng-show="!pitcher.ping" ng-click="doPitcherPing(true)">Ping</button>
+                <button class="tuum-btn tuum-dangerous" disabled ng-show="pitcher.ping" ng-click="doPitcherPing(false)">Pinging</button>
               </div>
 
             </div>

@@ -39,14 +39,26 @@ ngCtl.controller('DriveCtrl',
     $scope.ballCount = 0;
 
     //TODO: get dia state
-    $scope.diaState = false;
+    $scope.pitcher = {
+      diaState : false,
+      ping : false,
+      speed: 51,
+      angle: 51,
+      distance: 5
+    };
+
+    $scope.drive = {
+        maxVelocity : 50,
+        acceleration : 50,
+        controlsEnabled : true
+    };
 
     $scope.doCharge = function() {
       agent.comm.doCharge();
     }
 
     $scope.doPitcherSA = function(speed, angle) {
-      console.log("doPitcherSA()" + speed + " " + angle);
+      console.log("doPitcherSA() s: " + speed + " a: " + angle);
       //agent.comm.doPitcherSA(speed, angle);
 
       agent.comm.pitcherSet(speed, angle).then(function(data) {
@@ -63,9 +75,44 @@ ngCtl.controller('DriveCtrl',
     $scope.doDiaState = function(state) {
       console.log("doDiaState()" + state);
 
-      if($scope.diaState != state){
-        $scope.diaState = state;
+      if($scope.pitcher.diaState != state){
+        $scope.pitcher.diaState = state;
         //agent.comm.doDiaState($scope.diaState);
+      }
+
+    }
+
+    $scope.doDriveParams = function(acc, max) {
+      accel = $scope.drive.acceleration;
+      maxVelocity = $scope.drive.maxVelocity;
+    }
+    $scope.$watch("drive.acceleration", $scope.doDriveParams);
+    $scope.$watch("drive.maxVelocity", $scope.doDriveParams);
+
+    $scope.doDriveControlsEnabled = function(state) {
+      console.log("doDriveControlsEnabled()" + state);
+
+      if($scope.drive.controlsEnabled != state){
+        $scope.drive.controlsEnabled = state;
+      }
+
+    }
+
+    $scope.doPitcherPing = function(state) {
+      console.log("doPitcherPing()" + state);
+
+      if($scope.pitcher.ping != state){
+        $scope.pitcher.ping = state;
+
+        $scope.doPitcherSA(17, 77);
+
+        $tim( function(){
+          $scope.pitcher.ping = false;
+          console.log($scope.pitcher.speed)
+          $scope.doPitcherSA(0, 0);
+        }, 1000 );
+
+        
       }
 
     }
@@ -80,19 +127,53 @@ ngCtl.controller('DriveCtrl',
 
     var last_packet = undefined;
 
-    var V = 60, R_v = 90;
+    var maxVelocity = $scope.drive.maxVelocity;   // Robot drive speed cm/s
+    var maxRotationVelocity = 90;  // Robot turn rate deg/s
+
+    var accel = $scope.drive.acceleration;
+
+    var currentVelocity = 0, deltaTime = 0, lastTickTime = millis();
+
+    function physicsTick(inp)
+    {
+        var a = accel;
+
+        if(inp.spd <= 0){
+          //stop imediately on speed 0
+          a = 0;
+          currentVelocity = 0;
+        }
+        var t = millis();
+        deltaTime = t - lastTickTime;
+
+        currentVelocity +=  a / deltaTime;
+
+        if(currentVelocity > maxVelocity) currentVelocity = maxVelocity;
+        else if(currentVelocity < 0) currentVelocity = 0;
+
+        lastTickTime = t;
+    }
 
     function sendControlCmds(inp, force = false) {
       if(!inp) return;
+
+      if(!$scope.drive.controlsEnabled){
+        console.log('controls disabled');
+        return;
+      }
 
       if(inp.lck == 0) {
         inp.spd = 0;
         inp.dir = 0;
         inp.rot = 0;
+        currentVelocity = 0;
       }
 
-      if(!_.isEqual(last_packet, inp) || force) {
-        if(agent.isReady()) agent.comm.omniDrive(inp.spd * V, inp.dir, inp.rot * R_v);
+      var v = parseInt(currentVelocity);
+
+      if(!_.isEqual(last_packet, inp) || currentVelocity!=inp.spd || force) {
+        console.log("omniDrive ", v, inp.dir, inp.rot * maxRotationVelocity);
+        if(agent.isReady()) agent.comm.omniDrive(v, inp.dir, inp.rot * maxRotationVelocity);
         last_packet = $.extend({},inp);
       }
     }
@@ -100,6 +181,11 @@ ngCtl.controller('DriveCtrl',
     TInp.on('Change', function(data) {
       sendControlCmds(data);
     });
+
+    $int(function() {
+      physicsTick(TInp.controlMap);
+    }, 1000 / 50);
+
 
     $int(function() {
       if(TInp.controlMap.lck == 1)
