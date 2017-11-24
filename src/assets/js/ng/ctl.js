@@ -9,9 +9,13 @@ var ngCtl = angular.module('TuumCtrl', [
 
 var seq = 0;
 
-ngCtl.controller('EmptyCtrl', ['$scope', function ($scope) {
-  $scope.id = seq++;
-}]);
+ngCtl.controller('EmptyCtrl',
+  ['$scope', 'TuumAgent',
+  function ($scope, TuumAgent) {
+    $scope.id = seq++;
+    $scope.Agent = TuumAgent;
+  }
+]);
 
 
 ngCtl.controller('DriveCtrl',
@@ -54,6 +58,11 @@ ngCtl.controller('DriveCtrl',
       offset: 0
     };
 
+    agent._robotState = {
+      pitcherSpeed : null,
+      pitcherAngle : null
+    };
+
     $scope.doCharge = function() {
       agent.comm.doCharge();
     }
@@ -63,7 +72,12 @@ ngCtl.controller('DriveCtrl',
       //agent.comm.doPitcherSA(speed, angle);
 
       agent.comm.pitcherSet(speed, angle).then(function(data) {
-        console.log(data);
+        
+        var {relativeSpeed, relativeAngle} = data;
+        
+        agent._robotState.pitcherSpeed = relativeSpeed;
+        agent._robotState.pitcherAngle = relativeAngle;
+
       });
     }
 
