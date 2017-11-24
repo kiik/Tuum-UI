@@ -48,9 +48,10 @@ ngCtl.controller('DriveCtrl',
     };
 
     $scope.drive = {
-        maxVelocity : 50,
-        acceleration : 50,
-        controlsEnabled : true
+      maxVelocity : 50,
+      acceleration : 50,
+      controlsEnabled : true,
+      offset: 0
     };
 
     $scope.doCharge = function() {
@@ -85,9 +86,11 @@ ngCtl.controller('DriveCtrl',
     $scope.doDriveParams = function(acc, max) {
       accel = $scope.drive.acceleration;
       maxVelocity = $scope.drive.maxVelocity;
+      driveOffset = $scope.drive.offset;
     }
     $scope.$watch("drive.acceleration", $scope.doDriveParams);
     $scope.$watch("drive.maxVelocity", $scope.doDriveParams);
+    $scope.$watch("drive.offset", $scope.doDriveParams);
 
     $scope.doDriveControlsEnabled = function(state) {
       console.log("doDriveControlsEnabled()" + state);
@@ -134,6 +137,8 @@ ngCtl.controller('DriveCtrl',
 
     var currentVelocity = 0, deltaTime = 0, lastTickTime = millis();
 
+    var driveOffset = $scope.drive.offset;
+
     function physicsTick(inp)
     {
         var a = accel;
@@ -166,25 +171,35 @@ ngCtl.controller('DriveCtrl',
         inp.spd = 0;
         inp.dir = 0;
         inp.rot = 0;
-        currentVelocity = 0;
+        return;
+      }
+
+      if( inp.spd == 0 && inp.rot == 0 ){
+        return;
+      }
+
+      //TODO: offset currently for moving forward. add +- based on direction
+      var offset = driveOffset;
+      if(currentVelocity<=0){
+        offset = 0;
       }
 
       var v = parseInt(currentVelocity);
 
       if(!_.isEqual(last_packet, inp) || currentVelocity!=inp.spd || force) {
-        console.log("omniDrive ", v, inp.dir, inp.rot * maxRotationVelocity);
-        if(agent.isReady()) agent.comm.omniDrive(v, inp.dir, inp.rot * maxRotationVelocity);
+        console.log(v, inp.dir, inp.rot * maxRotationVelocity + offset);
+        if(agent.isReady()) agent.comm.omniDrive(v, inp.dir, inp.rot * maxRotationVelocity + offset);
         last_packet = $.extend({},inp);
       }
     }
 
     TInp.on('Change', function(data) {
-      sendControlCmds(data);
+      //sendControlCmds(data, true);
     });
 
     $int(function() {
       physicsTick(TInp.controlMap);
-    }, 1000 / 50);
+    }, 1000 / 30);
 
 
     $int(function() {
